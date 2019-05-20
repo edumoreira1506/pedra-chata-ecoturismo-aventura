@@ -1,15 +1,15 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Home extends CI_Controller {
+class Admin extends CI_Controller {
 
-	public function index()
+	public function novoUsuario()
 	{
 		$data = [
 			'scripts' => []
 		];
 
-		$this->template->loadMain('home', $data);
+		$this->template->loadAdmin('home', $data);
 	}
 
 }

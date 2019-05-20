@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 20-Maio-2019 às 00:37
+-- Generation Time: 21-Maio-2019 às 00:47
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -190,6 +190,19 @@ CREATE TABLE `travels` (
   `price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `users`
+--
+
+CREATE TABLE `users` (
+  `id_user` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -276,6 +289,12 @@ ALTER TABLE `travels`
   ADD PRIMARY KEY (`id_travel`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id_user`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -356,6 +375,12 @@ ALTER TABLE `testimonies`
 --
 ALTER TABLE `travels`
   MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
