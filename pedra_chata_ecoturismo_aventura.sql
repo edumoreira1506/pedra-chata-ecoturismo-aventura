@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Maio-2019 às 00:47
+-- Generation Time: 21-Maio-2019 às 04:34
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -204,6 +204,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
+-- Extraindo dados da tabela `users`
+--
+
+INSERT INTO `users` (`id_user`, `name`, `email`, `password`) VALUES
+(1, 'Antonio Eduardo Moreira', 'contato@eduardoem.com.br', 'zvl0GlGPlDhNOEs/AZaYWIVFINsilZ4m8jwhyLlczMyyKvOaHPS7Pul9yUg+d24eNJd0VtM3WnCjA9J6hDskMA==');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -380,7 +387,7 @@ ALTER TABLE `travels`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

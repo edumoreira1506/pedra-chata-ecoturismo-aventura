@@ -14,19 +14,12 @@ $(document).ready(function(){
 			success: function(jsonResponse){
 				var response = JSON.parse(jsonResponse);
 				
-				if(response.status){
-					Swal.fire({
-						type: 'success',
-						title: 'Sucess',
-						text: response.message
-					});
-				}else{
-					Swal.fire({
-						type: 'error',
-						title: 'Oops..',
-						text: response.message
-					});
-				}
+				Swal.fire({
+					type: response.type,
+					title: 'Sucesso',
+					text: response.message
+				});
+				
 			}
 		});
 

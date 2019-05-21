@@ -1,13 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+require_once "Base.php";
+
+class Admin extends Base {
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->load->library('encrypt');
 		$this->load->model('users_model','modelUsers');
 	}
 
@@ -28,16 +29,18 @@ class Admin extends CI_Controller {
 		$exists = $this->modelUsers->getUserByEmail($email);
 
 		if($name == "" || $name == null || $email == "" || $email == null || $password == "" || $password == null){
-			$response = ['status' => false, 'message' => 'Todos campos são obrigatórios'];
+			$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
 		}elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-			$response = ['status' => false, 'message' => 'E-mail em formato incorreto'];
+			$response = ['type' => 'error', 'message' => 'E-mail em formato incorreto'];
 		}elseif(strlen($password) < 6){
-			$response = ['status' => false, 'message' => 'Senha precisa ter mais que 6 caracteres'];
+			$response = ['type' => 'error', 'message' => 'Senha precisa ter mais que 6 caracteres'];
 		}elseif(count($exists) > 0){
-			$response = ['status' => false, 'message' => 'Email já esta em uso'];
+			$response = ['type' => 'error', 'message' => 'Email já esta em uso'];
 		}else{
-			$encryptedPassword = $this->encrypt->encode($password, encryption_key());
-			$response = ['status' => true, 'message' => $encryptedPassword];
+			$user = new $this->modelUsers($name, $email, $password);
+			$user->insert();
+
+			$response = ['type' => 'success', 'message' => 'Usuário cadastrado'];
 		}
 
 		echo json_encode($response);
