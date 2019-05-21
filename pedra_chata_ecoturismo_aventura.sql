@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Maio-2019 às 04:34
+-- Generation Time: 21-Maio-2019 às 21:07
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -387,7 +387,7 @@ ALTER TABLE `travels`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

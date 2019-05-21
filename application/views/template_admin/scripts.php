@@ -6,8 +6,7 @@
 <script src="<?= base_url() ?>public/js/plugins/chartjs.min.js"></script>
 <script src="<?= base_url() ?>public/js/plugins/bootstrap-notify.js"></script>
 <script src="<?= base_url() ?>public/js/now-ui-dashboard.min.js?v=1.3.0" type="text/javascript"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>°
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <?php foreach($scripts as $script): ?>
 	<script src="<?= base_url() ?>public/js/<?= $script ?>.js"></script>
 <?php endforeach ?>

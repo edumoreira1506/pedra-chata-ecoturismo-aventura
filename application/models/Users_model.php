@@ -41,4 +41,55 @@ class Users_model extends Base_model
 		$this->add('users', $data);
 	}
 
+	public function getAllUsers()
+	{
+		$this->db->select('*');
+        $databaseUsers  = $this->db->get('users')->result();
+
+        $users = [];
+        foreach ($databaseUsers as $databaseUser) {
+        	$user = new Users_model(
+        		$databaseUser->name,
+        		$databaseUser->email,
+        		null,
+        		$databaseUser->id_user
+        	);
+
+        	$users[] = $user;
+        }
+
+        return $users;
+	}
+
+	public function deleteUser($userId)
+	{
+		$this->db->where('id_user', $userId);
+		$this->db->delete('users');
+	}
+
+	public function searchUsers($keyWord)
+	{
+		$this->db->select('*');
+		$this->db->like('email', "$keyWord");
+		$this->db->or_like('name', "$keyWord");
+
+        $databaseUsers  = $this->db->get('users')->result();
+        return $databaseUsers;
+	}
+
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	public function getEmail()
+	{
+		return $this->email;
+	}
+
+	public function getUserId()
+	{
+		return $this->userId;
+	}
+
 }
