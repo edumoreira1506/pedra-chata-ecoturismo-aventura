@@ -77,5 +77,43 @@
 </div>
 </div>
 </div>
-<a href="novoUsuario"><button class="btn btn-round btn-primary" type="click">Criar Usuário</button></a>
+<button class="btn btn-round btn-primary" type="click" id="create-new-user">Criar Usuário</button>
 </div>
+<div class="card out-display-none" id="modal-new-user">
+            <div class="card-header">
+                <h5 class="title">Criar novo usuário</h5>
+          </div>
+          <div class="card-body">
+              <form id="new-user-form">
+                <div class="row">
+              <div class="col-md-6 pr-1">
+                <div class="form-group">
+                  <label for="name">Nome</label>
+                  <input type="text" class="form-control" id="name" placeholder="Nome completo" required="">
+              </div>
+          </div>
+          <div class="col-md-6 pl-1">
+            <div class="form-group">
+              <label for="email">Endereço de email</label>
+              <input type="email" id="email" class="form-control" placeholder="Email" required="">
+          </div>
+      </div>
+  </div>
+  <div class="row">
+      <div class="col-md-6 pr-1">
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <input type="password" id="password" class="form-control" placeholder="Senha" required="">
+      </div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <button class="btn btn-round btn-primary" type="submit">Criar</button>
+        <button class="btn btn-round btn-primary" id="close-modal-user">Fechar</button>
+  </div>
+</div>
+</form></div>
+
+</div>
+<div class="background-modal out-display-none" id="background-modal"></div>

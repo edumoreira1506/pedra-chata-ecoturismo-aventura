@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   <!-- CSS Files -->
   <link href="<?= base_url() ?>public/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="<?= base_url() ?>public/css/my.css" rel="stylesheet" />
   <link href="<?= base_url() ?>public/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
   <script type="text/javascript">
     const baseUrl = '<?= base_url(); ?>';
@@ -45,6 +46,12 @@
             <a href="usuarios">
               <i class="fas fa-users"></i>
               <p>Usuários</p>
+            </a>
+          </li>
+          <li class="active-pro">
+            <a href="menu">
+              <i class="fas fa-bars"></i>
+              <p>Menu</p>
             </a>
           </li>
           <li class="active-pro">

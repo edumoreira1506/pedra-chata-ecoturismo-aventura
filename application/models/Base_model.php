@@ -19,4 +19,28 @@ class Base_model extends CI_Model
 		return false;
 	}
 
+	public function edit($table, $data, $fieldID, $ID){
+		$this->db->where($fieldID,$ID);
+		$this->db->update($table, $data);
+
+		if ($this->db->affected_rows() >= 0)
+		{
+			return true;
+		}
+
+		return false;       
+	}
+
+	public function delete($table, $fieldID, $ID){
+        $this->db->where($fieldID,$ID);
+        $this->db->delete($table);
+
+        if ($this->db->affected_rows() == '1')
+        {
+            return true;
+        }
+        
+        return false;        
+    }
+
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 21-Maio-2019 às 21:07
+-- Generation Time: 22-Maio-2019 às 02:36
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -85,6 +85,13 @@ CREATE TABLE `menu_options` (
   `name` varchar(30) NOT NULL,
   `link` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `menu_options`
+--
+
+INSERT INTO `menu_options` (`id_menu`, `name`, `link`) VALUES
+(3, 'Inicial', ' ');
 
 -- --------------------------------------------------------
 
@@ -333,7 +340,7 @@ ALTER TABLE `images_travels`
 -- AUTO_INCREMENT for table `menu_options`
 --
 ALTER TABLE `menu_options`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `newsletter_subscribers`
@@ -387,7 +394,7 @@ ALTER TABLE `travels`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables

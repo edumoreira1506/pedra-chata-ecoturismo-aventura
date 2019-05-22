@@ -61,12 +61,6 @@ class Users_model extends Base_model
         return $users;
 	}
 
-	public function deleteUser($userId)
-	{
-		$this->db->where('id_user', $userId);
-		$this->db->delete('users');
-	}
-
 	public function searchUsers($keyWord)
 	{
 		$this->db->select('*');

@@ -1,16 +1,15 @@
 $(document).ready(function(){
 
-	$('#new-user-form').submit(function(e){
+	$('#new-option-menu').submit(function(e){
 		e.preventDefault();
 
 		var name = $('#name').val();
-		var email = $('#email').val();
-		var password = $('#password').val();
+		var link = $('#link').val();
 
 		$.ajax({
-			url: `${baseUrl}admin/createNewUser`,
+			url: `${baseUrl}admin/createNewOptionMenu`,
 			method: 'POST',
-			data: {name, email, password},
+			data: {name, link},
 			success: function(jsonResponse){
 				var response = JSON.parse(jsonResponse);
 				
@@ -19,8 +18,8 @@ $(document).ready(function(){
 					title: 'Sucesso',
 					text: response.message
 				}).then(() => {
-					searchUsers('');
-				});
+					searchMenuOptions('');
+				})
 				
 			}
 		});

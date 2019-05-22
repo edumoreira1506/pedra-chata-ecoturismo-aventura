@@ -4,6 +4,22 @@ $(document).ready(function(){
 		searchUsers(this.value)
 	})
 
+	$('#create-new-user').click(function(){
+		$('#modal-new-user').removeClass('out-display-none');
+		$('#background-modal').removeClass('out-display-none');
+
+		$('#name').val('');
+		$('#email').val('');
+		$('#password').val('');
+	});
+
+	$('#close-modal-user').click(function(e){
+		e.preventDefault();
+
+		$('#modal-new-user').addClass('out-display-none');
+		$('#background-modal').addClass('out-display-none');
+	})
+
 });
 
 function deleteUser(userId){

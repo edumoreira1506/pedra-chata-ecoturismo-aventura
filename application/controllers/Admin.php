@@ -11,6 +11,7 @@ class Admin extends Base {
 
 		$this->load->library('encrypt');
 		$this->load->model('users_model','modelUsers');
+		$this->load->model('menu_options_model','modelMenuOptions');
 	}
 
 	public function index()
@@ -26,19 +27,6 @@ class Admin extends Base {
 		}
 	}
 
-	public function novoUsuario()
-	{
-		if ($this->session->userdata('logado')) {
-			$data = [
-				'scripts' => ['new-user', 'admin'],
-				'active' => 0
-			];
-
-			$this->template->loadAdmin('admin/new-user-form', $data);
-		}else{
-			redirect('admin');
-		}
-	}
 
 	public function painel()
 	{
@@ -61,12 +49,46 @@ class Admin extends Base {
 			$users = $this->modelUsers->getAllUsers();
 
 			$data = [
-				'scripts' => ['admin','users'],
+				'scripts' => ['admin','users', 'new-user'],
 				'active' => 1,
 				'users' => $users
 			];
-			
+
 			$this->template->loadAdmin('admin/users', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function menu()
+	{
+		if ($this->session->userdata('logado')) {
+			$menuOptions = $this->modelMenuOptions->getAllMenuOptions();
+
+			$data = [
+				'scripts' => ['admin', 'menu-options', 'new-option-menu'],
+				'active' => 2,
+				'menuOptions' => $menuOptions
+			];
+			
+			$this->template->loadAdmin('admin/menu-options', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getMenuOption()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar links do menu'];
+			}else{
+				$idMenuOption = $this->input->post('idMenuOption');
+				$menuOption = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
+				$response = $menuOption;
+			}
+
+			echo json_encode($response);
 		}else{
 			redirect('admin');
 		}
@@ -95,6 +117,62 @@ class Admin extends Base {
 				$user->insert();
 
 				$response = ['type' => 'success', 'message' => 'Usuário cadastrado'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function createNewOptionMenu()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$link = $this->input->post('link');
+			$exists = $this->modelMenuOptions->getMenuOptionByLink($link);
+
+			if($name == "" || $name == null || $link == "" || $link == null){
+				$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(count($exists) > 0){
+				$response = ['type' => 'error', 'message' => 'Link já esta em uso'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
+			}else{
+				$menuOption = new $this->modelMenuOptions($name, $link);
+				$menuOption->insert();
+
+				$response = ['type' => 'success', 'message' => 'Menu cadastrado'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editMenuOption()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$link = $this->input->post('link');
+			$idMenuOption = $this->input->post('idMenuOption');
+			$exists = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
+
+			if($name == "" || $name == null || $link == "" || $link == null){
+				$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(count($exists) == 0){
+				$response = ['type' => 'error', 'message' => 'Esse link é inexistente'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar menus'];
+			}else{
+				$data =[
+					'name' => $name,
+					'link' => $link
+				];
+
+				$this->modelMenuOptions->edit('menu_options', $data, 'id_menu', $idMenuOption);
+				$response = ['type' => 'success', 'message' => 'Menu editado com sucesso'];
 			}
 
 			echo json_encode($response);
@@ -147,9 +225,27 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
 			}else{
 				$userId = $this->input->post('userId');
-				$this->modelUsers->deleteUser($userId);
+				$this->modelUsers->delete('users', 'id_user', $userId);
 
 				$response = ['type' => 'success', 'message' => 'Usuário excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteMenuOption()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
+			}else{
+				$idMenuOption = $this->input->post('idMenuOption');
+				$this->modelMenuOptions->delete('menu_options', 'id_menu', $idMenuOption);
+
+				$response = ['type' => 'success', 'message' => 'Menu/link excluido com sucesso!'];
 			}
 
 			echo json_encode($response);
@@ -168,6 +264,24 @@ class Admin extends Base {
 				$users = $this->modelUsers->searchUsers($keyWord);
 
 				$response = ['users' => $users];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchMenuOptions()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar opções do menu'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$menuOption = $this->modelMenuOptions->searchMenuOptions($keyWord);
+
+				$response = ['menuOptions' => $menuOption];
 			}
 
 			echo json_encode($response);
