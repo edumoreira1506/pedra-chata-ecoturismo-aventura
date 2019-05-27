@@ -17,7 +17,7 @@ $(document).ready(function(){
 				}else{
 					Swal.fire({
 						type: response.type,
-						title: 'Sucesso',
+						title: response.title,
 						text: response.message
 					});
 				}

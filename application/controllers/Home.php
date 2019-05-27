@@ -10,15 +10,21 @@ class Home extends Base {
 		parent::__construct();
 
 		$this->load->model('menu_options_model', 'modelMenuOptions');
+		$this->load->model('social_medias_model', 'modelSocialMedias');
+		$this->load->model('featured_banners_model', 'modelFeaturedBanners');
 	}
 
 	public function index()
 	{
 		$menuOptions = $this->modelMenuOptions->getAllMenuOptions();
+		$socialMedias = $this->modelSocialMedias->getAllSocialMedias();
+		$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
 
 		$data = [
 			'scripts' => ['default'],
 			'menuOptions' => $menuOptions,
+			'socialMedias' => $socialMedias,
+			'banners' => $banners,
 			'activeLink' => 0
 		];
 

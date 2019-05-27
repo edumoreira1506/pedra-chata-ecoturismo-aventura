@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 22-Maio-2019 às 02:36
+-- Generation Time: 27-Maio-2019 às 04:52
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -36,6 +36,13 @@ CREATE TABLE `banners` (
   `button_link` varchar(255) NOT NULL,
   `image_path` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `banners`
+--
+
+INSERT INTO `banners` (`id_banner`, `title`, `description`, `button_content`, `button_link`, `image_path`) VALUES
+(1, 'Teste', 'dsadsa', 'Clique', 'http://localhost/pedra-chata-ecoturismo-aventura', '20190527043225banner-1.png');
 
 -- --------------------------------------------------------
 
@@ -157,6 +164,13 @@ CREATE TABLE `social_medias` (
   `name` varchar(30) NOT NULL,
   `icon` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `social_medias`
+--
+
+INSERT INTO `social_medias` (`id_social_media`, `link`, `name`, `icon`) VALUES
+(1, 'https://www.facebook.com/Pedra-Chata-Ecoturismo-e-Aventura-140900813277645/', 'Facebook', '<i class=\"fab fa-facebook\"></i>');
 
 -- --------------------------------------------------------
 
@@ -316,7 +330,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `banners`
 --
 ALTER TABLE `banners`
-  MODIFY `id_banner` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_banner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -340,7 +354,7 @@ ALTER TABLE `images_travels`
 -- AUTO_INCREMENT for table `menu_options`
 --
 ALTER TABLE `menu_options`
-  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_menu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `newsletter_subscribers`
@@ -370,7 +384,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `social_medias`
 --
 ALTER TABLE `social_medias`
-  MODIFY `id_social_media` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_social_media` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `submenu_options`
@@ -394,7 +408,7 @@ ALTER TABLE `travels`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables

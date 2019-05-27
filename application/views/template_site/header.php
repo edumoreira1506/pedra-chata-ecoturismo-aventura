@@ -1,32 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Travalers &mdash; Colorlib Website Template</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Travalers &mdash; Colorlib Website Template</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Display+Playfair:200,300,400,700"> 
-    <link rel="stylesheet" href="<?= base_url() ?>public/fonts/icomoon/style.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,700,900|Display+Playfair:200,300,400,700"> 
+  <link rel="stylesheet" href="<?= base_url() ?>public/fonts/icomoon/style.css">
 
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/magnific-popup.css">
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/jquery-ui.css">
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/magnific-popup.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/jquery-ui.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap-datepicker.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap-datepicker.css">
 
-    <link rel="stylesheet" href="<?= base_url() ?>public/fonts/flaticon/font/flaticon.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/fonts/flaticon/font/flaticon.css">
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">
 
 
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/aos.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/aos.css">
 
-    <link rel="stylesheet" href="<?= base_url() ?>public/css/style.css">
-    <script>
-        const activeLink = '<?= $activeLink ?>';
-    </script>
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/style.css">
+  <script>
+    const activeLink = '<?= $activeLink ?>';
+</script>
 </head>
 <body>
 
@@ -54,10 +55,10 @@
 
           <ul class="site-menu js-clone-nav mx-auto d-none d-lg-block">
             <?php foreach ($menuOptions as $menuOption): ?>
-            <li>
+              <li>
                 <a href="<?= base_url() . $menuOption->getLink(); ?>"><?= $menuOption->getName(); ?></a>
             </li>
-            <?php endforeach ?>
+        <?php endforeach ?>
                 <!-- <li class="has-children">
                   <a href="destination.html">Destinations</a>
                   <ul class="dropdown">
@@ -74,19 +75,11 @@
   <div class="col-6 col-xl-2 text-right">
     <div class="d-none d-xl-inline-block">
       <ul class="site-menu js-clone-nav ml-auto list-unstyled d-flex text-right mb-0" data-class="social">
-        <li>
-          <a href="#" class="pl-0 pr-3 text-black"><span class="icon-tripadvisor"></span></a>
-      </li>
-      <li>
-          <a href="#" class="pl-3 pr-3 text-black"><span class="icon-twitter"></span></a>
-      </li>
-      <li>
-          <a href="#" class="pl-3 pr-3 text-black"><span class="icon-facebook"></span></a>
-      </li>
-      <li>
-          <a href="#" class="pl-3 pr-3 text-black"><span class="icon-instagram"></span></a>
-      </li>
-
+        <?php foreach($socialMedias as $socialMedia): ?>
+            <li>
+          <a href="<?= $socialMedia->getLink() ?>" class="pl-0 pr-3 text-black" target="_blank"><?= $socialMedia->getIcon() ?></a>
+          </li>
+          <?php endforeach ?>
   </ul>
 </div>
 

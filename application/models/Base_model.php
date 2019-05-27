@@ -19,6 +19,16 @@ class Base_model extends CI_Model
 		return false;
 	}
 
+	public function addGetId($table, $data)
+	{
+		$this->db->insert($table, $data);
+		if ($this->db->affected_rows() == '1') {
+			return $this->db->insert_id($table);;
+		}
+		
+		return false;
+	}
+
 	public function edit($table, $data, $fieldID, $ID){
 		$this->db->where($fieldID,$ID);
 		$this->db->update($table, $data);

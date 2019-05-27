@@ -12,6 +12,8 @@ class Admin extends Base {
 		$this->load->library('encrypt');
 		$this->load->model('users_model','modelUsers');
 		$this->load->model('menu_options_model','modelMenuOptions');
+		$this->load->model('social_medias_model','modelSocialMedias');
+		$this->load->model('featured_banners_model','modelFeaturedBanners');
 	}
 
 	public function index()
@@ -60,7 +62,7 @@ class Admin extends Base {
 		}
 	}
 
-	public function menu()
+	public function menus()
 	{
 		if ($this->session->userdata('logado')) {
 			$menuOptions = $this->modelMenuOptions->getAllMenuOptions();
@@ -72,6 +74,64 @@ class Admin extends Base {
 			];
 			
 			$this->template->loadAdmin('admin/menu-options', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function redesSociais()
+	{
+		if ($this->session->userdata('logado')) {
+			$socialMedias = $this->modelSocialMedias->getAllSocialMedias();
+
+			$data = [
+				'scripts' => ['admin', 'social-medias'],
+				'active' => 3,
+				'socialMedias' => $socialMedias
+			];
+			
+			$this->template->loadAdmin('admin/social-medias', $data);
+		}else{
+			redirect('admin');
+		}
+	} 
+
+	public function bannersDestaque()
+	{
+		if ($this->session->userdata('logado')) {
+			$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
+
+			$data = [
+				'scripts' => ['admin', 'featured-banners'],
+				'active' => 4,
+				'banners' => $banners
+			];
+			
+			$this->template->loadAdmin('admin/featured-banners', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewSocialMedia()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$link = $this->input->post('link');
+			$icon = $this->input->post('icon');
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar redes sociais'];
+			}elseif($name == null || $name == "" || $link == null || $link == "" || $icon == null || $icon == ""){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}else{
+				$socialMedia = new $this->modelSocialMedias($name, $icon, null, $link);
+				$socialMedia->insert();
+
+				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Rede social registrada!'];
+			}
+
+			echo json_encode($response);
 		}else{
 			redirect('admin');
 		}
@@ -94,6 +154,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function getSocialMedia()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar redes sociais'];
+			}else{
+				$idSocialMedia = $this->input->post('idSocialMedia');
+				$socialMedia = $this->modelSocialMedias->getSocialMediaById($idSocialMedia);
+				$response = $socialMedia;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function createNewUser()
 	{
 		if($this->input->is_ajax_request()){
@@ -103,20 +180,20 @@ class Admin extends Base {
 			$exists = $this->modelUsers->getUserByEmail($email);
 
 			if($name == "" || $name == null || $email == "" || $email == null || $password == "" || $password == null){
-				$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
 			}elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-				$response = ['type' => 'error', 'message' => 'E-mail em formato incorreto'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'E-mail em formato incorreto'];
 			}elseif(strlen($password) < 6){
-				$response = ['type' => 'error', 'message' => 'Senha precisa ter mais que 6 caracteres'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Senha precisa ter mais que 6 caracteres'];
 			}elseif(count($exists) > 0){
-				$response = ['type' => 'error', 'message' => 'Email já esta em uso'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Email já esta em uso'];
 			}elseif(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
 			}else{
 				$user = new $this->modelUsers($name, $email, $password);
 				$user->insert();
 
-				$response = ['type' => 'success', 'message' => 'Usuário cadastrado'];
+				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Usuário cadastrado'];
 			}
 
 			echo json_encode($response);
@@ -133,16 +210,16 @@ class Admin extends Base {
 			$exists = $this->modelMenuOptions->getMenuOptionByLink($link);
 
 			if($name == "" || $name == null || $link == "" || $link == null){
-				$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
 			}elseif(count($exists) > 0){
-				$response = ['type' => 'error', 'message' => 'Link já esta em uso'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Link já esta em uso'];
 			}elseif(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
+				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
 			}else{
 				$menuOption = new $this->modelMenuOptions($name, $link);
 				$menuOption->insert();
 
-				$response = ['type' => 'success', 'message' => 'Menu cadastrado'];
+				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Menu cadastrado'];
 			}
 
 			echo json_encode($response);
@@ -160,11 +237,11 @@ class Admin extends Base {
 			$exists = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
 
 			if($name == "" || $name == null || $link == "" || $link == null){
-				$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
 			}elseif(count($exists) == 0){
-				$response = ['type' => 'error', 'message' => 'Esse link é inexistente'];
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Esse link é inexistente'];
 			}elseif(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar menus'];
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para editar menus'];
 			}else{
 				$data =[
 					'name' => $name,
@@ -172,7 +249,39 @@ class Admin extends Base {
 				];
 
 				$this->modelMenuOptions->edit('menu_options', $data, 'id_menu', $idMenuOption);
-				$response = ['type' => 'success', 'message' => 'Menu editado com sucesso'];
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Menu editado com sucesso'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editSocialMedia()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$link = $this->input->post('link');
+			$icon = $this->input->post('icon');
+			$idSocialMedia = $this->input->post('idSocialMedia');
+			$exists = $this->modelSocialMedias->getSocialMediaById($idSocialMedia);
+
+			if($name == "" || $name == null || $link == "" || $link == null || $icon == null || $icon == ""){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(count($exists) == 0){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Essa rede social é inexistente'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para editar redes sociais'];
+			}else{
+				$data =[
+					'name' => $name,
+					'link' => $link,
+					'icon' => $icon
+				];
+
+				$this->modelSocialMedias->edit('social_medias', $data, 'id_social_media', $idSocialMedia);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Rede social editada com sucesso'];
 			}
 
 			echo json_encode($response);
@@ -189,13 +298,13 @@ class Admin extends Base {
 
 			$user = $this->modelUsers->getUserByEmail($email);
 			if(count($user) == 0){
-				$response = ['status' => false, 'type' => 'error', 'message' => 'Email ou senha inválidos'];
+				$response = ['status' => false, 'title' => 'Ops' ,'type' => 'error', 'message' => 'Email ou senha inválidos'];
 			}else{
 				$encryptedPassword = $user->password;
 				$decryptedPassword = $this->encrypt->decode($encryptedPassword);
 
 				if($password != $decryptedPassword){
-					$response = ['status' => false, 'type' => 'error', 'message' => 'Email ou senha inválidos'];
+					$response = ['status' => false, 'title' => 'Ops' ,'type' => 'error', 'message' => 'Email ou senha inválidos'];
 				}else{
 					$data = [
 						'logado' => true
@@ -222,12 +331,12 @@ class Admin extends Base {
 	{
 		if($this->input->is_ajax_request()){
 			if(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
 			}else{
 				$userId = $this->input->post('userId');
 				$this->modelUsers->delete('users', 'id_user', $userId);
 
-				$response = ['type' => 'success', 'message' => 'Usuário excluido com sucesso!'];
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Usuário excluido com sucesso!'];
 			}
 
 			echo json_encode($response);
@@ -240,12 +349,30 @@ class Admin extends Base {
 	{
 		if($this->input->is_ajax_request()){
 			if(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
 			}else{
 				$idMenuOption = $this->input->post('idMenuOption');
 				$this->modelMenuOptions->delete('menu_options', 'id_menu', $idMenuOption);
 
-				$response = ['type' => 'success', 'message' => 'Menu/link excluido com sucesso!'];
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Menu/link excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteSocialMedia()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar redes sociais'];
+			}else{
+				$idSocialMedia = $this->input->post('idSocialMedia');
+				$this->modelSocialMedias->delete('social_medias', 'id_social_media', $idSocialMedia);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Rede social excluida com sucesso!'];
 			}
 
 			echo json_encode($response);
@@ -282,6 +409,75 @@ class Admin extends Base {
 				$menuOption = $this->modelMenuOptions->searchMenuOptions($keyWord);
 
 				$response = ['menuOptions' => $menuOption];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchSocialMedia()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar redes sociais'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$socialMedias = $this->modelSocialMedias->searchSocialMedia($keyWord);
+
+				$response = ['menuOptions' => $socialMedias];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewBanner()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar redes sociais', 'title' => 'Erro!'];
+			}else{
+				$title = $this->input->post('title');
+				$description = $this->input->post('description');
+				$buttonContent = $this->input->post('button-content');
+				$buttonLink = $this->input->post('button-link');
+				$image = $_FILES['image'];
+				$imageName = $image['name'];
+
+				if($title == null || $title == "" || $description == null || $description == "" || $buttonContent == null || $buttonContent == "" || $buttonLink == null || $buttonLink == "" || $image == null || $imageName == ""){
+					$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios', 'title' => 'Erro!'];
+				}elseif(strlen($title) <= 0 || strlen($title) >= 20){
+					$response = ['type' => 'error', 'message' => 'Título precisa ter entre 1 e 20 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($description) <= 0 || strlen($description) >= 200){
+					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 200 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($buttonContent) <= 0 || strlen($buttonContent) > 9){
+					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 9 caracteres', 'title' => 'Erro!'];
+				}else{
+					$newImageName = date('Ymdhis').$imageName;
+					$config = [
+						'upload_path'   => '././public/images/featured-banners',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('image')){
+						$featuredBanner = new $this->modelFeaturedBanners($title, $description, $buttonContent, $buttonLink, $newImageName);
+						$featuredBanner->insert();
+
+						$response = ['type' => 'success', 'message' => 'Banner cadastrado com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				} 
+
 			}
 
 			echo json_encode($response);

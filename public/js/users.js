@@ -47,7 +47,7 @@ function deleteUser(userId){
 
 					Swal.fire({
 						type: response.type,
-						title: 'Sucesso',
+						title: response.title,
 						text: response.message
 					}).then(() => {
 						searchUsers('');
