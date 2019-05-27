@@ -67,6 +67,12 @@
   </a>
 </li>
 <li class="active-pro">
+    <a href="destaques">
+      <i class="fas fa-star"></i>
+      <p>Destauqes</p>
+  </a>
+</li>
+<li class="active-pro">
     <a href="exitOut">
       <i class="fas fa-sign-out-alt"></i>
       <p>Sair</p>

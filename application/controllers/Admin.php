@@ -8,12 +8,12 @@ class Admin extends Base {
 	public function __construct()
 	{
 		parent::__construct();
-
 		$this->load->library('encrypt');
 		$this->load->model('users_model','modelUsers');
 		$this->load->model('menu_options_model','modelMenuOptions');
 		$this->load->model('social_medias_model','modelSocialMedias');
 		$this->load->model('featured_banners_model','modelFeaturedBanners');
+		$this->load->model('highlights_model','modelHighlights');
 	}
 
 	public function index()
@@ -113,6 +113,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function destaques()
+	{
+		if ($this->session->userdata('logado')) {
+			$highlights = $this->modelHighlights->getAllHighlights();
+
+			$data = [
+				'scripts' => ['admin', 'highlights'],
+				'active' => 5,
+				'highlights' => $highlights
+			];
+			
+			$this->template->loadAdmin('admin/highlights', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function registerNewSocialMedia()
 	{
 		if($this->input->is_ajax_request()){
@@ -146,6 +163,23 @@ class Admin extends Base {
 				$idMenuOption = $this->input->post('idMenuOption');
 				$menuOption = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
 				$response = $menuOption;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getBanner()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar banners'];
+			}else{
+				$idBanner = $this->input->post('idBanner');
+				$banner = $this->modelFeaturedBanners->getBannerById($idBanner);
+				$response = $banner;
 			}
 
 			echo json_encode($response);
@@ -258,6 +292,65 @@ class Admin extends Base {
 		}
 	}
 
+	public function editBanner()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$idBanner = $this->input->post('id-banner');
+			$description = $this->input->post('description');
+			$buttonContent = $this->input->post('button-content');
+			$buttonLink = $this->input->post('button-link');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($title == "" || $title == null || $description == "" || $description == null || $buttonContent == "" || $buttonContent == null || $buttonLink == "" || $buttonLink == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				}else{
+					$data = [
+						'title' => $title,
+						'description' => $description,
+						'button_content' => $buttonContent,
+						'button_link' => $buttonLink
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/featured-banners',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->modelFeaturedBanners->edit('banners', $data, 'id_banner', $idBanner);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner editado com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->modelFeaturedBanners->edit('banners', $data, 'id_banner', $idBanner);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner editado com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function editSocialMedia()
 	{
 		if($this->input->is_ajax_request()){
@@ -345,6 +438,42 @@ class Admin extends Base {
 		}
 	}
 
+	public function deleteBanner()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar banners'];
+			}else{
+				$idBanner = $this->input->post('idBanner');
+				$this->modelFeaturedBanners->delete('banners', 'id_banner', $idBanner);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteHighlight()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar destaques'];
+			}else{
+				$idHighlight = $this->input->post('idHighlight');
+				$this->modelHighlights->delete('highlights', 'id_highlight', $idHighlight);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function deleteMenuOption()
 	{
 		if($this->input->is_ajax_request()){
@@ -399,6 +528,42 @@ class Admin extends Base {
 		}
 	}
 
+	public function searchHighlights()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar destaques'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$highlights = $this->modelHighlights->searchHighlights($keyWord);
+
+				$response = ['highlights' => $highlights];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchBanners()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar banners'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$banners = $this->modelFeaturedBanners->searchBanners($keyWord);
+
+				$response = ['banners' => $banners];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function searchMenuOptions()
 	{
 		if($this->input->is_ajax_request()){
@@ -439,7 +604,7 @@ class Admin extends Base {
 	{
 		if($this->input->is_ajax_request()){
 			if(!$this->session->userdata('logado')){
-				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar redes sociais', 'title' => 'Erro!'];
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para cadastrar banners', 'title' => 'Erro!'];
 			}else{
 				$title = $this->input->post('title');
 				$description = $this->input->post('description');
@@ -455,7 +620,7 @@ class Admin extends Base {
 				}elseif(strlen($description) <= 0 || strlen($description) >= 200){
 					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 200 caracteres', 'title' => 'Erro!'];
 				}elseif(strlen($buttonContent) <= 0 || strlen($buttonContent) > 9){
-					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 9 caracteres', 'title' => 'Erro!'];
+					$response = ['type' => 'error', 'message' => 'Conteúdo do botão precisa ter entre 1 e 9 caracteres', 'title' => 'Erro!'];
 				}else{
 					$newImageName = date('Ymdhis').$imageName;
 					$config = [
@@ -484,6 +649,86 @@ class Admin extends Base {
 		}else{
 			redirect('admin');
 		}
+	}
+
+	public function registerNewHighlight()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para cadastrar destaques', 'title' => 'Erro!'];
+			}else{
+				$title = $this->input->post('title');
+				$description = $this->input->post('description');
+				$image = $_FILES['image'];
+				$imageName = $image['name'];
+
+				if($title == null || $title == "" || $description == null || $description == "" || $image == null || $imageName == ""){
+					$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios', 'title' => 'Erro!'];
+				}elseif(strlen($title) <= 0 || strlen($title) >= 30){
+					$response = ['type' => 'error', 'message' => 'Título precisa ter entre 1 e 30 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($description) <= 0 || strlen($description) >= 200){
+					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 200 caracteres', 'title' => 'Erro!'];
+				}else{
+					$newImageName = date('Ymdhis').$imageName;
+
+					$config = [
+						'upload_path'   => '././public/images/highlights',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('image')){
+						$highlight = new $this->modelHighlights(null, $title, $description, 0, $newImageName);
+						$highlight->insert();
+
+						$response = ['type' => 'success', 'message' => 'Destaque cadastrado com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				} 
+
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}	
+	}
+
+	public function changeActiveHighlight()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para mudar o status do destaque', 'title' => 'Erro!'];
+			}else{
+				$idHighlight = $this->input->post('idHighlight');
+				$status = $this->input->post('status');
+				$highlights = $this->modelHighlights->getAllHighlightsActive();
+
+				if(count($highlights) >= 3 && $status){
+					$response = ['type' => 'error', 'message' => 'Só pode existir três destaques ativos', 'title' => 'Erro!'];
+				}else{
+					if($idHighlight == null || $idHighlight == "" || $status == null || $status == "" ){
+						$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios', 'title' => 'Erro!'];
+					}else{
+						$data = [
+							'active' => $status
+						];
+
+						$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+						$response = ['type' => 'success', 'message' => 'Destaque editado com sucesso', 'title' => 'Boa!'];
+					}
+				}
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}	
 	}
 
 }

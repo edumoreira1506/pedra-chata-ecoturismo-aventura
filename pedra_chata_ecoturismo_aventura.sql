@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 27-Maio-2019 às 04:52
+-- Generation Time: 28-Maio-2019 às 00:23
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -42,7 +42,8 @@ CREATE TABLE `banners` (
 --
 
 INSERT INTO `banners` (`id_banner`, `title`, `description`, `button_content`, `button_link`, `image_path`) VALUES
-(1, 'Teste', 'dsadsa', 'Clique', 'http://localhost/pedra-chata-ecoturismo-aventura', '20190527043225banner-1.png');
+(2, 'titulo', 'dsadsadsadasdsadasdasdsa', 'clique', 'http://localhost/pedra-chata-ecoturismo-aventura', '20190527084343divulgacao-facebook.png'),
+(3, 'dsdsa', 'dsadsa', 'dsadsa', 'http://facebook.com', '20190527084838banner-1.png');
 
 -- --------------------------------------------------------
 
@@ -66,8 +67,17 @@ CREATE TABLE `highlights` (
   `id_highlight` int(11) NOT NULL,
   `image_path` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `title` varchar(30) NOT NULL
+  `title` varchar(30) NOT NULL,
+  `active` int(2) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `highlights`
+--
+
+INSERT INTO `highlights` (`id_highlight`, `image_path`, `description`, `title`, `active`) VALUES
+(1, '20190527092107area-depoimentos.jpg', 'dsadsadsa', 'Nome auiii', 1),
+(2, '20190527092411area-depoimentos.jpg', 'dsadsadsa', 'Titulo aqui', 1);
 
 -- --------------------------------------------------------
 
@@ -330,7 +340,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `banners`
 --
 ALTER TABLE `banners`
-  MODIFY `id_banner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_banner` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `categories`
@@ -342,7 +352,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `highlights`
 --
 ALTER TABLE `highlights`
-  MODIFY `id_highlight` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_highlight` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `images_travels`

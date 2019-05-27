@@ -20,7 +20,7 @@
       <div class="collapse navbar-collapse justify-content-end" id="navigation">
         <form>
           <div class="input-group no-border">
-            <input type="text" value="" class="form-control" placeholder="Buscar...">
+            <input type="text" value="" class="form-control" id="search-banners" placeholder="Buscar...">
             <div class="input-group-append">
               <div class="input-group-text">
                 <i class="now-ui-icons ui-1_zoom-bold"></i>
@@ -34,7 +34,7 @@
   <div class="panel-header panel-header-sm">
   </div>
   <div class="content">
-    <div class="row">
+    <div class="row" id="banners-list">
       <?php foreach($banners as $banner): ?>
       <div class="col-md-4">
         <div class="card card-user">
@@ -116,6 +116,58 @@
           <div class="col-md-6 pl-1">
             <button class="btn btn-round btn-primary" type="submit">Criar</button>
             <button class="btn btn-round btn-primary" type="submit" id="close-modal-register-banner">Fechar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card out-display-none" id="modal-edit-banner">
+    <div class="card-header">
+      <h5 class="title">Editar novo banner</h5>
+    </div>
+    <div class="card-body">
+      <form id="edit-featured-banner">
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-title">Título</label>
+              <input type="text" class="form-control" id="edit-title" name="title" placeholder="Título" required>
+            </div>
+          </div>
+          <div class="col-md-6 pl-1">
+            <div class="form-group">
+              <label for="edit-description">Descrição</label>
+              <input type="text" id="edit-description" class="form-control" name="description" placeholder="Descrição" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-button-content">Conteúdo do Botão</label>
+              <input type="text" id="edit-button-content" class="form-control" name="button-content" placeholder="Conteúdo do botão" required>
+            </div>
+          </div>              
+          <div class="col-md-6 pl-1">
+            <div class="form-group">
+              <label for="edit-button-link">Link do botão</label>
+              <input type="text" id="edit-button-link" class="form-control" name="button-link" placeholder="Link do botão" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div>
+              <label for="edit-image">Banner</label>
+              <input type="file" id="edit-image" class="form-control" name="image">
+              <input type="hidden" id="id-banner" class="form-control" name="id-banner" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pl-1">
+            <button class="btn btn-round btn-primary" type="submit">Editar</button>
+            <button class="btn btn-round btn-primary" type="submit" id="close-modal-edit-banner">Fechar</button>
           </div>
         </div>
       </form>

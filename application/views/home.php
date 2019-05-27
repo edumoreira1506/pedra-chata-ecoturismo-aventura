@@ -21,30 +21,16 @@
       
       <div class="container overlap-section">
         <div class="row">
+          <?php foreach ($highlights as $highlight): ?>
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
             <a href="#" class="unit-1 text-center">
-              <img src="<?= base_url() ?>public/images/img_2.jpg" alt="Image" class="img-fluid">
+              <img src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="Image" class="img-fluid">
               <div class="unit-1-text">
-                <h3 class="unit-1-heading">Write Down Your Experience</h3>
+                <h3 class="unit-1-heading"><?= $highlight->getTitle() ?></h3>
               </div>
             </a>
           </div>
-          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
-            <a href="#" class="unit-1 text-center">
-              <img src="<?= base_url() ?>public/images/img_1.jpg" alt="Image" class="img-fluid">
-              <div class="unit-1-text">
-                <h3 class="unit-1-heading">Explore Asian Mountains</h3>
-              </div>
-            </a>
-          </div>
-          <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
-            <a href="#" class="unit-1 text-center">
-              <img src="<?= base_url() ?>public/images/img_3.jpg" alt="Image" class="img-fluid">
-              <div class="unit-1-text">
-                <h3 class="unit-1-heading">Safe Trip With Airasia</h3>
-              </div>
-            </a>
-          </div>
+        <?php endforeach ?>
         </div>
       </div>
     

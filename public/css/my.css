@@ -11,7 +11,7 @@
 	padding: 0;
 }
 
-#modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner{
+#modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner, #modal-edit-banner, #modal-register-highlight{
 	position: absolute;
 	bottom: 50%;
 	right: 50%;

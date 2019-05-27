@@ -88,5 +88,22 @@ class Featured_banners_model extends Base_model
         return $featuredBanners;
 	}
 
+	public function searchBanners($keyWord)
+	{
+		$this->db->select('*');
+		$this->db->like('title', "$keyWord");
+		$this->db->or_like('description', "$keyWord");
+
+        $databaseUsers  = $this->db->get('banners')->result();
+        return $databaseUsers;
+	}
+
+	public function getBannerById($idBanner)
+	{
+		$this->db->select('*');
+		$this->db->where('id_banner', $idBanner); 
+        $this->db->limit(1);
+        return $this->db->get('banners')->row();
+	}
 
 }
