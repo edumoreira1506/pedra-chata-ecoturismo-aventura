@@ -119,12 +119,12 @@ class Highlights_model extends Base_model
         return $databaseUsers;
 	}
 
-	public function getBannerById($idBanner)
+	public function getHighlightById($idHighlight)
 	{
 		$this->db->select('*');
-		$this->db->where('id_banner', $idBanner); 
+		$this->db->where('id_highlight', $idHighlight); 
         $this->db->limit(1);
-        return $this->db->get('banners')->row();
+        return $this->db->get('highlights')->row();
 	}
 
 }

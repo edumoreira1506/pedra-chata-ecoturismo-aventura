@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 28-Maio-2019 às 00:23
+-- Generation Time: 29-Maio-2019 às 04:46
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -76,7 +76,7 @@ CREATE TABLE `highlights` (
 --
 
 INSERT INTO `highlights` (`id_highlight`, `image_path`, `description`, `title`, `active`) VALUES
-(1, '20190527092107area-depoimentos.jpg', 'dsadsadsa', 'Nome auiii', 1),
+(1, '201905290403445.png', 'dsadsadsa', 'Nome auiiiaa', 1),
 (2, '20190527092411area-depoimentos.jpg', 'dsadsadsa', 'Titulo aqui', 1);
 
 -- --------------------------------------------------------
@@ -221,6 +221,13 @@ CREATE TABLE `travels` (
   `price` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `travels`
+--
+
+INSERT INTO `travels` (`id_travel`, `featured_image`, `title`, `description`, `price`) VALUES
+(1, '201905290433353.png', 'Titulo do passeio aqui', 'dsadsadsa', 153);
+
 -- --------------------------------------------------------
 
 --
@@ -239,7 +246,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `name`, `email`, `password`) VALUES
-(1, 'Antonio Eduardo Moreira', 'contato@eduardoem.com.br', 'zvl0GlGPlDhNOEs/AZaYWIVFINsilZ4m8jwhyLlczMyyKvOaHPS7Pul9yUg+d24eNJd0VtM3WnCjA9J6hDskMA==');
+(1, 'Antonio Eduardo Moreira', 'contato@eduardoem.com.br', 'zvl0GlGPlDhNOEs/AZaYWIVFINsilZ4m8jwhyLlczMyyKvOaHPS7Pul9yUg+d24eNJd0VtM3WnCjA9J6hDskMA=='),
+(2, 'Larissa Nicoli da Cruz Silva ', 'larissanicoli19@gmail.com', 'wXuT/8tk219ktCCOgC3YY82IWqdJBp9HYXjWaCttrqF/jpRzfSUf7Tahvrk+SK8QNAho1PvS1j6/k9ySTXSS2Q==');
 
 --
 -- Indexes for dumped tables
@@ -352,7 +360,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `highlights`
 --
 ALTER TABLE `highlights`
-  MODIFY `id_highlight` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_highlight` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `images_travels`
@@ -412,13 +420,13 @@ ALTER TABLE `testimonies`
 -- AUTO_INCREMENT for table `travels`
 --
 ALTER TABLE `travels`
-  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

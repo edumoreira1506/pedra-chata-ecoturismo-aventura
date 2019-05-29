@@ -13,6 +13,7 @@ class Home extends Base {
 		$this->load->model('social_medias_model', 'modelSocialMedias');
 		$this->load->model('featured_banners_model', 'modelFeaturedBanners');
 		$this->load->model('highlights_model','modelHighlights');
+		$this->load->model('travels_model','modelTravels');
 	}
 
 	public function index()
@@ -21,6 +22,7 @@ class Home extends Base {
 		$socialMedias = $this->modelSocialMedias->getAllSocialMedias();
 		$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
 		$highlights = $this->modelHighlights->getAllHighlightsActive();
+		$travels = $this->modelTravels->getAllTravels();
 
 		$data = [
 			'scripts' => ['default'],
@@ -28,6 +30,7 @@ class Home extends Base {
 			'socialMedias' => $socialMedias,
 			'banners' => $banners,
 			'highlights' => $highlights,
+			'travels' => $travels,
 			'activeLink' => 0
 		];
 

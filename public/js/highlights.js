@@ -16,6 +16,13 @@ $(document).ready(function(){
 		$('#background-modal').addClass('out-display-none');
 	});
 
+	$('#close-modal-edit-highlight').click(function(e){
+		e.preventDefault();
+
+		$('#modal-edit-highlight').addClass('out-display-none');
+		$('#background-modal').addClass('out-display-none');
+	})
+
 	$('#search-highlights').keyup(function(){
 		searchHighlights(this.value);
 	})
@@ -28,6 +35,32 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: `${baseUrl}admin/registerNewHighlight`,
+			method: 'POST',
+			data: formData,
+			dataType: 'json',
+			processData: false,  
+			contentType: false,
+			success: function(jsonResponse){				
+				Swal.fire({
+					type: jsonResponse.type,
+					title: jsonResponse.title,
+					text: jsonResponse.message
+				}).then(() => {
+					searchHighlights('');
+				});
+				
+			}
+		});
+	})
+
+	$('#edit-highlight').submit(function(e){
+		e.preventDefault();
+
+		var form = document.getElementById('edit-highlight');
+		var formData = new FormData(form);
+
+		$.ajax({
+			url: `${baseUrl}admin/editHighlight`,
 			method: 'POST',
 			data: formData,
 			dataType: 'json',
@@ -150,7 +183,7 @@ const searchHighlights = keyWord => {
 	});
 }
 
-var deleteHighlight = idHighlight => {
+const deleteHighlight = idHighlight => {
 	Swal.fire({
 		title: 'Confirmação?',
 		text: `Tem certeza que deseja excluir o destaque?`,
@@ -181,4 +214,27 @@ var deleteHighlight = idHighlight => {
 			});
 		}
 	})
+}
+
+const editHighlight = idHighlight => {
+	$('#modal-edit-highlight').removeClass('out-display-none');
+	$('#background-modal').removeClass('out-display-none');
+
+	$('#edit-title').val('');
+	$('#edit-description').val('');
+	$('#edit-image').val('');
+	$('#edit-id-highlight').val('');
+
+	$.ajax({
+		url: `${baseUrl}admin/getHighlight`,
+		method: 'POST',
+		data: {idHighlight},
+		success: function(jsonResponse){				
+			var response = JSON.parse(jsonResponse);
+
+			$('#edit-title').val(response.title);
+			$('#edit-description').val(response.description);
+			$('#edit-id-highlight').val(response.id_highlight);
+		}
+	});
 }

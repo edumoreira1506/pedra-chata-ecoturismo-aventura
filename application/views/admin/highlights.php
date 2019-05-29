@@ -75,11 +75,11 @@
       </div>
       <?php endforeach ?>
     </div>
-    <button class="btn btn-round btn-primary" type="click" id="register-new-highlight">Cadastrar novo highlight</button>
+    <button class="btn btn-round btn-primary" type="click" id="register-new-highlight">Cadastrar novo destaque</button>
   </div>
   <div class="card out-display-none" id="modal-register-highlight">
     <div class="card-header">
-      <h5 class="title">Cadastrar novo highlight</h5>
+      <h5 class="title">Cadastrar novo destaque</h5>
     </div>
     <div class="card-body">
       <form id="register-highlight">
@@ -109,6 +109,44 @@
           <div class="col-md-6 pl-1">
             <button class="btn btn-round btn-primary" type="submit">Criar</button>
             <button class="btn btn-round btn-primary" type="submit" id="close-modal-register-highlight">Fechar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card out-display-none" id="modal-edit-highlight">
+    <div class="card-header">
+      <h5 class="title">Editar destaque</h5>
+    </div>
+    <div class="card-body">
+      <form id="edit-highlight">
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-title">Título</label>
+              <input type="text" class="form-control" id="edit-title" name="title" placeholder="Título" required>
+            </div>
+          </div>
+          <div class="col-md-6 pl-1">
+            <div class="form-group">
+              <label for="edit-description">Descrição</label>
+              <input type="text" id="edit-description" class="form-control" name="description" placeholder="Descrição" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div>
+              <label for="edit-image">Banner</label>
+              <input type="file" id="edit-image" class="form-control" name="image">
+              <input type="hidden" id="edit-id-highlight" name="id-highlight" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pl-1">
+            <button class="btn btn-round btn-primary" type="submit">Editar</button>
+            <button class="btn btn-round btn-primary" type="submit" id="close-modal-edit-highlight">Fechar</button>
           </div>
         </div>
       </form>

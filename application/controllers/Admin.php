@@ -14,6 +14,7 @@ class Admin extends Base {
 		$this->load->model('social_medias_model','modelSocialMedias');
 		$this->load->model('featured_banners_model','modelFeaturedBanners');
 		$this->load->model('highlights_model','modelHighlights');
+		$this->load->model('travels_model','modelTravels');
 	}
 
 	public function index()
@@ -130,6 +131,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function passeios()
+	{
+		if ($this->session->userdata('logado')) {
+			$travels = $this->modelTravels->getAllTravels();
+
+			$data = [
+				'scripts' => ['admin', 'travels'],
+				'active' => 6,
+				'travels' => $travels
+			];
+			
+			$this->template->loadAdmin('admin/travels', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function registerNewSocialMedia()
 	{
 		if($this->input->is_ajax_request()){
@@ -197,6 +215,23 @@ class Admin extends Base {
 				$idSocialMedia = $this->input->post('idSocialMedia');
 				$socialMedia = $this->modelSocialMedias->getSocialMediaById($idSocialMedia);
 				$response = $socialMedia;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getHighlight()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar destaques'];
+			}else{
+				$idHighlight = $this->input->post('idHighlight');
+				$highlight = $this->modelHighlights->getHighlightById($idHighlight);
+				$response = $highlight;
 			}
 
 			echo json_encode($response);
@@ -338,6 +373,61 @@ class Admin extends Base {
 					}else{
 						$this->modelFeaturedBanners->edit('banners', $data, 'id_banner', $idBanner);
 						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner editado com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editHighlight()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$idHighlight = $this->input->post('id-highlight');
+			$description = $this->input->post('description');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($title == "" || $title == null || $idHighlight == "" || $idHighlight == null || $description == "" || $description == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				}else{
+					$data = [
+						'title' => $title,
+						'description' => $description
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/highlights',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque editado com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque editado com sucesso'];
 					}
 
 				}
@@ -697,6 +787,55 @@ class Admin extends Base {
 		}else{
 			redirect('admin');
 		}	
+	}
+
+	public function registerNewTravel()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para cadastrar passeios', 'title' => 'Erro!'];
+			}else{
+				$title = $this->input->post('title');
+				$description = $this->input->post('description');
+				$price = $this->input->post('price');
+				$image = $_FILES['featured-image'];
+				$imageName = $image['name'];
+
+				if($title == null || $title == "" || $description == null || $description == "" || $image == null || $imageName == "" || $price == null || $price == ""){
+					$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios', 'title' => 'Erro!'];
+				}elseif(strlen($title) <= 0 || strlen($title) >= 30){
+					$response = ['type' => 'error', 'message' => 'Título precisa ter entre 1 e 30 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($description) <= 0 || strlen($description) >= 200){
+					$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 200 caracteres', 'title' => 'Erro!'];
+				}else{
+					$newImageName = date('Ymdhis').$imageName;
+
+					$config = [
+						'upload_path'   => '././public/images/featured-images-travels',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('featured-image')){
+						$travel = new $this->modelTravels(null, $title, $description, $price, $newImageName);
+						$travel->insert();
+
+						$response = ['type' => 'success', 'message' => 'Passeio cadastrado com sucesso! Para inserir imagens, basta editá-lo', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				} 
+
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
 	}
 
 	public function changeActiveHighlight()

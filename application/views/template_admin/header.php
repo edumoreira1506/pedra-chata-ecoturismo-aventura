@@ -73,6 +73,12 @@
   </a>
 </li>
 <li class="active-pro">
+    <a href="passeios">
+      <i class="fas fa-route"></i>
+      <p>Passeios</p>
+  </a>
+</li>
+<li class="active-pro">
     <a href="exitOut">
       <i class="fas fa-sign-out-alt"></i>
       <p>Sair</p>
