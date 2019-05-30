@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Travalers &mdash; Colorlib Website Template</title>
+  <title>Agência Pedra Chata</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>public/css/magnific-popup.css">
   <link rel="stylesheet" href="<?= base_url() ?>public/css/jquery-ui.css">
+  <link rel="stylesheet" href="<?= base_url() ?>public/css/my.css">
   <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.carousel.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.theme.default.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
@@ -27,6 +28,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>public/css/style.css">
   <script>
     const activeLink = '<?= $activeLink ?>';
+    const baseUrl = '<?= base_url(); ?>';
 </script>
 </head>
 <body>

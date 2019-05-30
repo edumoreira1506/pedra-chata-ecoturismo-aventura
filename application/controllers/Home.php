@@ -14,6 +14,7 @@ class Home extends Base {
 		$this->load->model('featured_banners_model', 'modelFeaturedBanners');
 		$this->load->model('highlights_model','modelHighlights');
 		$this->load->model('travels_model','modelTravels');
+		$this->load->model('services_model','modelServices');
 	}
 
 	public function index()
@@ -23,6 +24,7 @@ class Home extends Base {
 		$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
 		$highlights = $this->modelHighlights->getAllHighlightsActive();
 		$travels = $this->modelTravels->getAllTravels();
+		$services = $this->modelServices->getAllServices();
 
 		$data = [
 			'scripts' => ['default'],
@@ -31,6 +33,7 @@ class Home extends Base {
 			'banners' => $banners,
 			'highlights' => $highlights,
 			'travels' => $travels,
+			'services' => $services,
 			'activeLink' => 0
 		];
 

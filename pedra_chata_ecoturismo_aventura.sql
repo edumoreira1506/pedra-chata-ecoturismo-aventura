@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 29-Maio-2019 às 04:46
+-- Generation Time: 30-Maio-2019 às 22:21
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -121,6 +121,13 @@ CREATE TABLE `newsletter_subscribers` (
   `email` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `newsletter_subscribers`
+--
+
+INSERT INTO `newsletter_subscribers` (`id_subscriber`, `email`) VALUES
+(1, 'emdesigneroficial@gmail.com');
+
 -- --------------------------------------------------------
 
 --
@@ -161,6 +168,15 @@ CREATE TABLE `services` (
   `title` varchar(30) NOT NULL,
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `services`
+--
+
+INSERT INTO `services` (`id_service`, `icon`, `title`, `description`) VALUES
+(2, '<i class=\"fab fa-pagelines\"></i>', 'Testeqq', 'Testeeeeeeeeeeee'),
+(3, '<i class=\"fas fa-leaf\"></i>', 'Rolês diversosb', 'bora que boraaaaaaa'),
+(4, '<i class=\"fas fa-solar-panel\"></i>', 'Painel solar', 'dbasobdoabdoabodbaobdoas');
 
 -- --------------------------------------------------------
 
@@ -226,7 +242,7 @@ CREATE TABLE `travels` (
 --
 
 INSERT INTO `travels` (`id_travel`, `featured_image`, `title`, `description`, `price`) VALUES
-(1, '201905290433353.png', 'Titulo do passeio aqui', 'dsadsadsa', 153);
+(2, '2019053004380510.png', 'aaaaaaaa', 'dsadsadsasdaas', 152);
 
 -- --------------------------------------------------------
 
@@ -378,7 +394,7 @@ ALTER TABLE `menu_options`
 -- AUTO_INCREMENT for table `newsletter_subscribers`
 --
 ALTER TABLE `newsletter_subscribers`
-  MODIFY `id_subscriber` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_subscriber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `persons_of_team`
@@ -396,7 +412,7 @@ ALTER TABLE `publications`
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_service` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `social_medias`
@@ -420,7 +436,7 @@ ALTER TABLE `testimonies`
 -- AUTO_INCREMENT for table `travels`
 --
 ALTER TABLE `travels`
-  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`

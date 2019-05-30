@@ -15,6 +15,7 @@ class Admin extends Base {
 		$this->load->model('featured_banners_model','modelFeaturedBanners');
 		$this->load->model('highlights_model','modelHighlights');
 		$this->load->model('travels_model','modelTravels');
+		$this->load->model('services_model','modelServices');
 	}
 
 	public function index()
@@ -148,6 +149,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function servicos()
+	{
+		if ($this->session->userdata('logado')) {
+			$services = $this->modelServices->getAllServices();
+
+			$data = [
+				'scripts' => ['admin', 'services'],
+				'active' => 7,
+				'services' => $services
+			];
+			
+			$this->template->loadAdmin('admin/services', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function registerNewSocialMedia()
 	{
 		if($this->input->is_ajax_request()){
@@ -172,6 +190,34 @@ class Admin extends Base {
 		}
 	}
 
+	public function registerNewService()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$description = $this->input->post('description');
+			$icon = $this->input->post('icon');
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar serviços'];
+			}elseif($title == null || $title == "" || $description == null || $description == "" || $icon == null || $icon == ""){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(strlen($title) > 250){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Descrição deve ter no máximo 250 caracteres'];
+			}elseif(strlen($title) >= 30){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Título deve ter no máximo 30 caracteres'];
+			}else{
+				$service = new $this->modelServices(null, $title, $description, $icon);
+				$service->insert();
+
+				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Serviço registrado!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function getMenuOption()
 	{
 		if($this->input->is_ajax_request()){
@@ -181,6 +227,40 @@ class Admin extends Base {
 				$idMenuOption = $this->input->post('idMenuOption');
 				$menuOption = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
 				$response = $menuOption;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getService()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar serviços'];
+			}else{
+				$idService = $this->input->post('idService');
+				$service = $this->modelServices->getServiceById($idService);
+				$response = $service;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getTravel()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar passeios'];
+			}else{
+				$idTravel = $this->input->post('idTravel');
+				$travel = $this->modelTravels->getTravelById($idTravel);
+				$response = $travel;
 			}
 
 			echo json_encode($response);
@@ -319,6 +399,74 @@ class Admin extends Base {
 
 				$this->modelMenuOptions->edit('menu_options', $data, 'id_menu', $idMenuOption);
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Menu editado com sucesso'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editService()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$description = $this->input->post('description');
+			$icon = $this->input->post('icon');
+			$idService = $this->input->post('id-service');
+			$exists = $this->modelServices->getServiceById($idService);
+
+			if($title == "" || $title == null || $description == "" || $description == null || $icon == "" || $icon == null){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(count($exists) == 0){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Esse serviço é inexistente'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para editar serviços'];
+			}elseif(strlen($title) <= 0 || strlen($title) >= 20){
+				$response = ['type' => 'error', 'message' => 'Título precisa ter entre 1 e 20 caracteres', 'title' => 'Erro!'];
+			}elseif(strlen($description) >= 200){
+				$response = ['type' => 'error', 'message' => 'Descrição precisa ter entre 1 e 200 caracteres', 'title' => 'Erro!'];
+			}else{
+				$data =[
+					'icon' => $icon,
+					'title' => $title,
+					'description' => $description
+				];
+
+				$this->modelServices->edit('services', $data, 'id_service', $idService);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Serviço editado com sucesso'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editTravel()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$description = $this->input->post('description');
+			$price = $this->input->post('price');
+			$idTravel = $this->input->post('edit-id-travel');
+			$exists = $this->modelTravels->getTravelById($idTravel);
+
+			if($title == "" || $title == null || $description == "" || $description == null || $price == "" || $price == null){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(count($exists) == 0){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Esse passeio é inexistente'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para editar passeios'];
+			}else{
+				$data =[
+					'title' => $title,
+					'description' => $description,
+					'price' => $price,
+				];
+
+				$this->modelTravels->edit('travels', $data, 'id_travel', $idTravel);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Passeio editado com sucesso'];
 			}
 
 			echo json_encode($response);
@@ -528,6 +676,42 @@ class Admin extends Base {
 		}
 	}
 
+	public function deleteService()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar serviços'];
+			}else{
+				$idService = $this->input->post('idService');
+				$this->modelServices->delete('services', 'id_service', $idService);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Serviço excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteTravel()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar passeios'];
+			}else{
+				$idTravel = $this->input->post('idTravel');
+				$this->modelTravels->delete('travels', 'id_travel', $idTravel);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Passeio excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function deleteBanner()
 	{
 		if($this->input->is_ajax_request()){
@@ -618,6 +802,24 @@ class Admin extends Base {
 		}
 	}
 
+	public function searchServices()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar serviços'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$services = $this->modelServices->searchServices($keyWord);
+
+				$response = ['services' => $services];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function searchHighlights()
 	{
 		if($this->input->is_ajax_request()){
@@ -646,6 +848,24 @@ class Admin extends Base {
 				$banners = $this->modelFeaturedBanners->searchBanners($keyWord);
 
 				$response = ['banners' => $banners];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchTravels()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar passeios'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$travels = $this->modelTravels->searchTravels($keyWord);
+
+				$response = ['travels' => $travels];
 			}
 
 			echo json_encode($response);

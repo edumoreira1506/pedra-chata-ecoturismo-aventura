@@ -10,6 +10,7 @@
 <script src="<?= base_url() ?>public/js/bootstrap-datepicker.min.js"></script>
 <script src="<?= base_url() ?>public/js/aos.js"></script>
 <script src="<?= base_url() ?>public/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <?php foreach($scripts as $script): ?>
 	<script src="<?= base_url() ?>public/js/<?= $script ?>.js"></script>

@@ -47,7 +47,7 @@
                 <h5 class="title"><?= $travel->getTitle(); ?></h5>
               </a>
               <p class="description">
-                <?= $travel->getPrice(); ?>
+                R$<?= $travel->getPrice(); ?>
               </p>
             </div>
             <p class="description text-center">
@@ -107,6 +107,44 @@
           <div class="col-md-6 pl-1">
             <button class="btn btn-round btn-primary" type="submit">Criar</button>
             <button class="btn btn-round btn-primary" type="submit" id="close-modal-register-travel">Fechar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card out-display-none" id="modal-edit-travel">
+    <div class="card-header">
+      <h5 class="title">Editar passeio</h5>
+    </div>
+    <div class="card-body">
+      <form id="edit-travel">
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-title">Título</label>
+              <input type="text" class="form-control" id="edit-title" name="title" placeholder="Título" required>
+              <input type="hidden"  id="edit-id-travel" name="edit-id-travel" required>
+            </div>
+          </div>
+          <div class="col-md-6 pl-1">
+            <div class="form-group">
+              <label for="edit-description">Descrição</label>
+              <input type="text" id="edit-description" class="form-control" name="description" placeholder="Descrição" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-price">Preço (apenas números)</label>
+              <input type="number" id="edit-price" class="form-control" name="price" placeholder="Preço" required>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pl-1">
+            <button class="btn btn-round btn-primary" type="submit">Editar</button>
+            <button class="btn btn-round btn-primary" type="submit" id="close-modal-edit-travel">Fechar</button>
           </div>
         </div>
       </form>

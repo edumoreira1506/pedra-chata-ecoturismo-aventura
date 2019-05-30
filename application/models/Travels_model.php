@@ -79,22 +79,22 @@ class Travels_model extends Base_model
         return $travels;
 	}
 
-	public function searchHighlights($keyWord)
+	public function searchTravels($keyWord)
 	{
 		$this->db->select('*');
 		$this->db->like('title', "$keyWord");
 		$this->db->or_like('description', "$keyWord");
 
-        $databaseUsers  = $this->db->get('highlights')->result();
-        return $databaseUsers;
+        $databaseTravels  = $this->db->get('travels')->result();
+        return $databaseTravels;
 	}
 
-	public function getHighlightById($idHighlight)
+	public function getTravelById($idTravel)
 	{
 		$this->db->select('*');
-		$this->db->where('id_highlight', $idHighlight); 
+		$this->db->where('id_travel', $idTravel); 
         $this->db->limit(1);
-        return $this->db->get('highlights')->row();
+        return $this->db->get('travels')->row();
 	}
 
 }

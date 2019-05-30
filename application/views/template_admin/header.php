@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="<?= base_url() ?>public/images/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Now UI Dashboard by Creative Tim
+    Admin - Pedra Chata
 </title>
 <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
 <!--     Fonts and icons     -->
@@ -76,6 +76,12 @@
     <a href="passeios">
       <i class="fas fa-route"></i>
       <p>Passeios</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="servicos">
+      <i class="fas fa-network-wired"></i>
+      <p>Serviços</p>
   </a>
 </li>
 <li class="active-pro">
