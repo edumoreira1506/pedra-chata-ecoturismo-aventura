@@ -9,22 +9,26 @@ class Home extends Base {
 	{
 		parent::__construct();
 
-		$this->load->model('menu_options_model', 'modelMenuOptions');
-		$this->load->model('social_medias_model', 'modelSocialMedias');
-		$this->load->model('featured_banners_model', 'modelFeaturedBanners');
-		$this->load->model('highlights_model','modelHighlights');
-		$this->load->model('travels_model','modelTravels');
-		$this->load->model('services_model','modelServices');
+		$this->load->model('menu_options_model', 'menu');
+		$this->load->model('social_medias_model', 'socialMedia');
+		$this->load->model('featured_banners_model', 'banner');
+		$this->load->model('highlights_model','highlight');
+		$this->load->model('travels_model','travel');
+		$this->load->model('services_model','service');
+		$this->load->model('categories_model','category');
+		$this->load->model('publications_model','publication');
 	}
 
 	public function index()
 	{
-		$menuOptions = $this->modelMenuOptions->getAllMenuOptions();
-		$socialMedias = $this->modelSocialMedias->getAllSocialMedias();
-		$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
-		$highlights = $this->modelHighlights->getAllHighlightsActive();
-		$travels = $this->modelTravels->getAllTravels();
-		$services = $this->modelServices->getAllServices();
+		$menuOptions = $this->menu->getAllMenuOptions();
+		$socialMedias = $this->socialMedia->getAllSocialMedias();
+		$banners = $this->banner->getAllFeaturedBanners();
+		$highlights = $this->highlight->getAllHighlightsActive();
+		$travels = $this->travel->getAllTravels();
+		$services = $this->service->getAllServices();
+		$categories = $this->category->getAllCategories();
+		$publications = $this->publication->getPublications(2, 0);
 
 		$data = [
 			'scripts' => ['default'],
@@ -34,7 +38,9 @@ class Home extends Base {
 			'highlights' => $highlights,
 			'travels' => $travels,
 			'services' => $services,
-			'activeLink' => 0
+			'categories' => $categories,
+			'activeLink' => 0,
+			'publications' => $publications
 		];
 
 		$this->template->loadMain('home', $data);

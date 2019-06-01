@@ -9,13 +9,17 @@ class Admin extends Base {
 	{
 		parent::__construct();
 		$this->load->library('encrypt');
-		$this->load->model('users_model','modelUsers');
-		$this->load->model('menu_options_model','modelMenuOptions');
-		$this->load->model('social_medias_model','modelSocialMedias');
-		$this->load->model('featured_banners_model','modelFeaturedBanners');
-		$this->load->model('highlights_model','modelHighlights');
-		$this->load->model('travels_model','modelTravels');
-		$this->load->model('services_model','modelServices');
+		$this->load->model('users_model','user');
+		$this->load->model('menu_options_model','menu');
+		$this->load->model('social_medias_model','socialMedia');
+		$this->load->model('featured_banners_model','banner');
+		$this->load->model('highlights_model','highlight');
+		$this->load->model('travels_model','travel');
+		$this->load->model('services_model','service');
+		$this->load->model('images_model','image');
+		$this->load->model('testimonies_model','testimony');
+		$this->load->model('categories_model','category');
+		$this->load->model('publications_model','publication');
 	}
 
 	public function index()
@@ -50,7 +54,7 @@ class Admin extends Base {
 	public function usuarios()
 	{
 		if ($this->session->userdata('logado')) {
-			$users = $this->modelUsers->getAllUsers();
+			$users = $this->user->getAllUsers();
 
 			$data = [
 				'scripts' => ['admin','users', 'new-user'],
@@ -67,7 +71,7 @@ class Admin extends Base {
 	public function menus()
 	{
 		if ($this->session->userdata('logado')) {
-			$menuOptions = $this->modelMenuOptions->getAllMenuOptions();
+			$menuOptions = $this->menu->getAllMenuOptions();
 
 			$data = [
 				'scripts' => ['admin', 'menu-options', 'new-option-menu'],
@@ -84,7 +88,7 @@ class Admin extends Base {
 	public function redesSociais()
 	{
 		if ($this->session->userdata('logado')) {
-			$socialMedias = $this->modelSocialMedias->getAllSocialMedias();
+			$socialMedias = $this->socialMedia->getAllSocialMedias();
 
 			$data = [
 				'scripts' => ['admin', 'social-medias'],
@@ -101,7 +105,7 @@ class Admin extends Base {
 	public function bannersDestaque()
 	{
 		if ($this->session->userdata('logado')) {
-			$banners = $this->modelFeaturedBanners->getAllFeaturedBanners();
+			$banners = $this->banner->getAllFeaturedBanners();
 
 			$data = [
 				'scripts' => ['admin', 'featured-banners'],
@@ -118,7 +122,7 @@ class Admin extends Base {
 	public function destaques()
 	{
 		if ($this->session->userdata('logado')) {
-			$highlights = $this->modelHighlights->getAllHighlights();
+			$highlights = $this->highlight->getAllHighlights();
 
 			$data = [
 				'scripts' => ['admin', 'highlights'],
@@ -135,7 +139,7 @@ class Admin extends Base {
 	public function passeios()
 	{
 		if ($this->session->userdata('logado')) {
-			$travels = $this->modelTravels->getAllTravels();
+			$travels = $this->travel->getAllTravels();
 
 			$data = [
 				'scripts' => ['admin', 'travels'],
@@ -152,7 +156,7 @@ class Admin extends Base {
 	public function servicos()
 	{
 		if ($this->session->userdata('logado')) {
-			$services = $this->modelServices->getAllServices();
+			$services = $this->service->getAllServices();
 
 			$data = [
 				'scripts' => ['admin', 'services'],
@@ -161,6 +165,78 @@ class Admin extends Base {
 			];
 			
 			$this->template->loadAdmin('admin/services', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function galeria()
+	{
+		if ($this->session->userdata('logado')) {
+			$images = $this->image->getAllImages();
+			$travels = $this->travel->getAllTravels();
+
+			$data = [
+				'scripts' => ['admin', 'images-travel'],
+				'active' => 8,
+				'images' => $images,
+				'travels' => $travels
+			];
+			
+			$this->template->loadAdmin('admin/images-travel', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function depoimentos()
+	{
+		if ($this->session->userdata('logado')) {
+			$testimonies = $this->testimony->getAllTestimonies();
+
+			$data = [
+				'scripts' => ['admin', 'testimonies'],
+				'active' => 9,
+				'testimonies' => $testimonies
+			];
+			
+			$this->template->loadAdmin('admin/testimonies', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function categorias()
+	{
+		if ($this->session->userdata('logado')) {
+			$categories = $this->category->getAllCategories();
+
+			$data = [
+				'scripts' => ['admin', 'categories'],
+				'active' => 10,
+				'categories' => $categories
+			];
+			
+			$this->template->loadAdmin('admin/categories', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function postagens()
+	{
+		if ($this->session->userdata('logado')) {
+			$publications = $this->publication->getPublications();
+			$categories = $this->category->getAllCategories();
+
+			$data = [
+				'scripts' => ['admin', 'publications', 'summernote/summernote-bs4'],
+				'active' => 11,
+				'publications' => $publications,
+				'categories' => $categories
+			];
+			
+			$this->template->loadAdmin('admin/publications', $data);
 		}else{
 			redirect('admin');
 		}
@@ -178,10 +254,191 @@ class Admin extends Base {
 			}elseif($name == null || $name == "" || $link == null || $link == "" || $icon == null || $icon == ""){
 				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
 			}else{
-				$socialMedia = new $this->modelSocialMedias($name, $icon, null, $link);
+				$socialMedia = new $this->socialMedia($name, $icon, null, $link);
 				$socialMedia->insert();
 
 				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Rede social registrada!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewCategory()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$description = $this->input->post('description');
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar categorias'];
+			}elseif($name == null || $name == "" || $description == null || $description == ""){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(strlen($name) > 30){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Nome da categoria precisa ter no máximo 30 caracteres'];
+			}elseif(strlen($description) > 254){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Descrição da categoria precisa ter no máximo 254 caracteres'];
+			}else{
+				$category = new $this->category($name, $description);
+				$category->insert();
+
+				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Categoria registrada!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewImage()
+	{
+		if($this->input->is_ajax_request()){
+			$travel = $this->input->post('travel');
+			$image = $_FILES['image'];
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar imagem'];
+			}elseif($image == null || $travel == "" || $travel == null){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}else{
+				$imageName = $image['name'];
+
+				$data = [
+					'id_travel' => $travel
+				];
+
+				if($image['name'] != ""){
+					$imageName = $image['name'];
+					$newImageName = date('Ymdhis').$imageName;
+
+					$config = [
+						'upload_path'   => '././public/images/images-travel',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					$data['image_path'] = $newImageName;
+
+					if ($this->upload->do_upload('image')){
+						$imageTravel = new $this->image($newImageName, $travel);
+						$imageTravel->insert();
+
+						$response = ['type' => 'success', 'message' => 'Imagem cadastrado com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				}else{
+					$response = ['title' => 'Erro','type' => 'error', 'message' => 'Imagem é obrigatória'];
+				}
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewPublication()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$content = $this->input->post('content');
+			$idCategory = $this->input->post('id-category');
+			$image = $_FILES['image'];
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar publicações'];
+			}elseif($image == null || $title == "" || $title == null || $content == "" || $content == null || $idCategory == "" || $idCategory == null){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(strlen($title) >= 30){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Título pode ter no máximo 30 caracteres'];
+			}else{
+				$imageName = $image['name'];
+
+				if($image['name'] != ""){
+					$imageName = $image['name'];
+					$newImageName = date('Ymdhis').$imageName;
+
+					$config = [
+						'upload_path'   => '././public/images/publications',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('image')){
+						$publication = new $this->publication($title, $content, $newImageName, null, null, $idCategory);
+						$publication->insert();
+
+						$response = ['type' => 'success', 'message' => 'Publicação cadastrada com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				}else{
+					$response = ['title' => 'Erro','type' => 'error', 'message' => 'Imagem é obrigatória'];
+				}
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewTestimony()
+	{
+		if($this->input->is_ajax_request()){
+			$personName = $this->input->post('person-name');
+			$testimony = $this->input->post('testimony');
+			$image = $_FILES['image'];
+
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Você precisa estar logado para registar depoimentos'];
+			}elseif($image == null || $personName == "" || $personName == null || $testimony == "" || $testimony == null){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(strlen($personName) > 200){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Nome da pessoa pode ter no máximo 200 caracteres'];
+			}elseif(strlen($testimony) > 254){
+				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Depoimento máximo 254 caracteres'];
+			}else{
+				$imageName = $image['name'];
+
+				if($image['name'] != ""){
+					$imageName = $image['name'];
+					$newImageName = date('Ymdhis').$imageName;
+
+					$config = [
+						'upload_path'   => '././public/images/testimonies',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+
+					if ($this->upload->do_upload('image')){
+						$testimony = new $this->testimony($testimony, $personName, $newImageName);
+						$testimony->insert();
+
+						$response = ['type' => 'success', 'message' => 'Depoimento cadastrado com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				}else{
+					$response = ['title' => 'Erro','type' => 'error', 'message' => 'Imagem é obrigatória'];
+				}
 			}
 
 			echo json_encode($response);
@@ -206,7 +463,7 @@ class Admin extends Base {
 			}elseif(strlen($title) >= 30){
 				$response = ['title' => 'Erro','type' => 'error', 'message' => 'Título deve ter no máximo 30 caracteres'];
 			}else{
-				$service = new $this->modelServices(null, $title, $description, $icon);
+				$service = new $this->service(null, $title, $description, $icon);
 				$service->insert();
 
 				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Serviço registrado!'];
@@ -225,8 +482,42 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar links do menu'];
 			}else{
 				$idMenuOption = $this->input->post('idMenuOption');
-				$menuOption = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
+				$menuOption = $this->menu->getMenuOptionById($idMenuOption);
 				$response = $menuOption;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getCategory()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar categorias'];
+			}else{
+				$idCategory = $this->input->post('idCategory');
+				$category = $this->category->getCategoryById($idCategory);
+				$response = $category;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getTestimony()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar depoimentos'];
+			}else{
+				$idTestimony = $this->input->post('idTestimony');
+				$testimony = $this->testimony->getTestimonyById($idTestimony);
+				$response = $testimony;
 			}
 
 			echo json_encode($response);
@@ -242,7 +533,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar serviços'];
 			}else{
 				$idService = $this->input->post('idService');
-				$service = $this->modelServices->getServiceById($idService);
+				$service = $this->service->getServiceById($idService);
 				$response = $service;
 			}
 
@@ -259,8 +550,25 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar passeios'];
 			}else{
 				$idTravel = $this->input->post('idTravel');
-				$travel = $this->modelTravels->getTravelById($idTravel);
+				$travel = $this->travel->getTravelById($idTravel);
 				$response = $travel;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getImage()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para visualizar imagens'];
+			}else{
+				$idImage = $this->input->post('idImage');
+				$image = $this->image->getImageById($idImage);
+				$response = $image;
 			}
 
 			echo json_encode($response);
@@ -276,7 +584,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar banners'];
 			}else{
 				$idBanner = $this->input->post('idBanner');
-				$banner = $this->modelFeaturedBanners->getBannerById($idBanner);
+				$banner = $this->banner->getBannerById($idBanner);
 				$response = $banner;
 			}
 
@@ -293,7 +601,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar redes sociais'];
 			}else{
 				$idSocialMedia = $this->input->post('idSocialMedia');
-				$socialMedia = $this->modelSocialMedias->getSocialMediaById($idSocialMedia);
+				$socialMedia = $this->socialMedia->getSocialMediaById($idSocialMedia);
 				$response = $socialMedia;
 			}
 
@@ -310,7 +618,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar destaques'];
 			}else{
 				$idHighlight = $this->input->post('idHighlight');
-				$highlight = $this->modelHighlights->getHighlightById($idHighlight);
+				$highlight = $this->highlight->getHighlightById($idHighlight);
 				$response = $highlight;
 			}
 
@@ -326,7 +634,7 @@ class Admin extends Base {
 			$name = $this->input->post('name');
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
-			$exists = $this->modelUsers->getUserByEmail($email);
+			$exists = $this->user->getUserByEmail($email);
 
 			if($name == "" || $name == null || $email == "" || $email == null || $password == "" || $password == null){
 				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -339,7 +647,7 @@ class Admin extends Base {
 			}elseif(!$this->session->userdata('logado')){
 				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
 			}else{
-				$user = new $this->modelUsers($name, $email, $password);
+				$user = new $this->user($name, $email, $password);
 				$user->insert();
 
 				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Usuário cadastrado'];
@@ -356,7 +664,7 @@ class Admin extends Base {
 		if($this->input->is_ajax_request()){
 			$name = $this->input->post('name');
 			$link = $this->input->post('link');
-			$exists = $this->modelMenuOptions->getMenuOptionByLink($link);
+			$exists = $this->menu->getMenuOptionByLink($link);
 
 			if($name == "" || $name == null || $link == "" || $link == null){
 				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -365,7 +673,7 @@ class Admin extends Base {
 			}elseif(!$this->session->userdata('logado')){
 				$response = ['title' => 'Ops','type' => 'error', 'message' => 'Você precisa estar logado para criar usuários'];
 			}else{
-				$menuOption = new $this->modelMenuOptions($name, $link);
+				$menuOption = new $this->menu($name, $link);
 				$menuOption->insert();
 
 				$response = ['title' => 'Sucesso','type' => 'success', 'message' => 'Menu cadastrado'];
@@ -383,7 +691,7 @@ class Admin extends Base {
 			$name = $this->input->post('name');
 			$link = $this->input->post('link');
 			$idMenuOption = $this->input->post('idMenuOption');
-			$exists = $this->modelMenuOptions->getMenuOptionById($idMenuOption);
+			$exists = $this->menu->getMenuOptionById($idMenuOption);
 
 			if($name == "" || $name == null || $link == "" || $link == null){
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -397,7 +705,7 @@ class Admin extends Base {
 					'link' => $link
 				];
 
-				$this->modelMenuOptions->edit('menu_options', $data, 'id_menu', $idMenuOption);
+				$this->menu->edit('menu_options', $data, 'id_menu', $idMenuOption);
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Menu editado com sucesso'];
 			}
 
@@ -414,7 +722,7 @@ class Admin extends Base {
 			$description = $this->input->post('description');
 			$icon = $this->input->post('icon');
 			$idService = $this->input->post('id-service');
-			$exists = $this->modelServices->getServiceById($idService);
+			$exists = $this->service->getServiceById($idService);
 
 			if($title == "" || $title == null || $description == "" || $description == null || $icon == "" || $icon == null){
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -433,8 +741,39 @@ class Admin extends Base {
 					'description' => $description
 				];
 
-				$this->modelServices->edit('services', $data, 'id_service', $idService);
+				$this->service->edit('services', $data, 'id_service', $idService);
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Serviço editado com sucesso'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editCategory()
+	{
+		if($this->input->is_ajax_request()){
+			$idCategory = $this->input->post('idCategory');
+			$name = $this->input->post('name');
+			$description = $this->input->post('description');
+
+			if($idCategory == "" || $idCategory == null || $name == "" || $name == null || $description == "" || $description == null){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado editar categorias'];
+			}elseif(strlen($name) > 30){
+				$response = ['type' => 'error', 'message' => 'Título precisa ter no máximo 30 caracteres', 'title' => 'Erro!'];
+			}elseif(strlen($description) >= 254){
+				$response = ['type' => 'error', 'message' => 'Descrição precisa ter no máximo 254 caracteres', 'title' => 'Erro!'];
+			}else{
+				$data = [
+					'name' => $name,
+					'description' => $description
+				];
+
+				$this->category->edit('categories', $data, 'id_category', $idCategory);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Categoria editado com sucesso'];
 			}
 
 			echo json_encode($response);
@@ -450,7 +789,7 @@ class Admin extends Base {
 			$description = $this->input->post('description');
 			$price = $this->input->post('price');
 			$idTravel = $this->input->post('edit-id-travel');
-			$exists = $this->modelTravels->getTravelById($idTravel);
+			$exists = $this->travel->getTravelById($idTravel);
 
 			if($title == "" || $title == null || $description == "" || $description == null || $price == "" || $price == null){
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -465,7 +804,7 @@ class Admin extends Base {
 					'price' => $price,
 				];
 
-				$this->modelTravels->edit('travels', $data, 'id_travel', $idTravel);
+				$this->travel->edit('travels', $data, 'id_travel', $idTravel);
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Passeio editado com sucesso'];
 			}
 
@@ -513,14 +852,126 @@ class Admin extends Base {
 						$data['image_path'] = $newImageName;
 
 						if ($this->upload->do_upload('image')){
-							$this->modelFeaturedBanners->edit('banners', $data, 'id_banner', $idBanner);
+							$this->banner->edit('banners', $data, 'id_banner', $idBanner);
 							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner editado com sucesso'];
 						}else{
 							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
 						}
 					}else{
-						$this->modelFeaturedBanners->edit('banners', $data, 'id_banner', $idBanner);
+						$this->banner->edit('banners', $data, 'id_banner', $idBanner);
 						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner editado com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editTestimony()
+	{
+		if($this->input->is_ajax_request()){
+			$idTestimony = $this->input->post('id-testimony');
+			$personName = $this->input->post('person-name');
+			$testimony = $this->input->post('testimony');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($idTestimony == "" || $idTestimony == null || $personName == "" || $personName == null || $testimony == "" || $testimony == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Nome e depoimento são obrigatórios'];
+				}elseif(strlen($personName) > 200){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Nome deve ter no máximo 200 caracteres'];
+				}elseif(strlen($testimony) > 254){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Depoimento deve ter no máximo 254 caracteres'];
+				}else{
+					$data = [
+						'person_name' => $personName,
+						'testimony' => $testimony
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/testimonies',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->testimony->edit('testimonies', $data, 'id_testimony', $idTestimony);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Depoimento editado com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->testimony->edit('testimonies', $data, 'id_testimony', $idTestimony);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Depoimento editado com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editImage()
+	{
+		if($this->input->is_ajax_request()){
+			$idTravel = $this->input->post('travel');
+			$idImage = $this->input->post('id-image');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($idTravel == "" || $idTravel == null || $idTravel == "" || $idTravel == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Tipo de passeio é obrigatório'];
+				}else{
+					$data = [
+						'id_travel' => $idTravel
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/images-travel',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->image->edit('images_travels', $data, 'id_image', $idImage);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Imagem editada com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->image->edit('images_travels', $data, 'id_image', $idImage);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Imagem editada com sucesso'];
 					}
 
 				}
@@ -568,13 +1019,13 @@ class Admin extends Base {
 						$data['image_path'] = $newImageName;
 
 						if ($this->upload->do_upload('image')){
-							$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+							$this->highlight->edit('highlights', $data, 'id_highlight', $idHighlight);
 							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque editado com sucesso'];
 						}else{
 							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
 						}
 					}else{
-						$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+						$this->highlight->edit('highlights', $data, 'id_highlight', $idHighlight);
 						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque editado com sucesso'];
 					}
 
@@ -596,7 +1047,7 @@ class Admin extends Base {
 			$link = $this->input->post('link');
 			$icon = $this->input->post('icon');
 			$idSocialMedia = $this->input->post('idSocialMedia');
-			$exists = $this->modelSocialMedias->getSocialMediaById($idSocialMedia);
+			$exists = $this->socialMedia->getSocialMediaById($idSocialMedia);
 
 			if($name == "" || $name == null || $link == "" || $link == null || $icon == null || $icon == ""){
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
@@ -611,7 +1062,7 @@ class Admin extends Base {
 					'icon' => $icon
 				];
 
-				$this->modelSocialMedias->edit('social_medias', $data, 'id_social_media', $idSocialMedia);
+				$this->socialMedia->edit('social_medias', $data, 'id_social_media', $idSocialMedia);
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Rede social editada com sucesso'];
 			}
 
@@ -627,7 +1078,7 @@ class Admin extends Base {
 			$email = $this->input->post('email');
 			$password = $this->input->post('password');
 
-			$user = $this->modelUsers->getUserByEmail($email);
+			$user = $this->user->getUserByEmail($email);
 			if(count($user) == 0){
 				$response = ['status' => false, 'title' => 'Ops' ,'type' => 'error', 'message' => 'Email ou senha inválidos'];
 			}else{
@@ -665,9 +1116,81 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
 			}else{
 				$userId = $this->input->post('userId');
-				$this->modelUsers->delete('users', 'id_user', $userId);
+				$this->user->delete('users', 'id_user', $userId);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Usuário excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deletePublication()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar publicações'];
+			}else{
+				$idPublication = $this->input->post('idPublication');
+				$this->user->delete('publications', 'id_publication', $idPublication);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Publicação excluida com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteCategory()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar categorias'];
+			}else{
+				$idCategory = $this->input->post('idCategory');
+				$this->category->delete('categories', 'id_category', $idCategory);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Categoria excluída com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteTestimony()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar depoimentos'];
+			}else{
+				$idTestimony = $this->input->post('idTestimony');
+				$this->user->delete('testimonies', 'id_testimony', $idTestimony);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Depoimento excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deleteImage()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar imagens'];
+			}else{
+				$idImage = $this->input->post('idImage');
+				$this->image->delete('images_travels', 'id_image', $idImage);
+
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Imagem excluida com sucesso!'];
 			}
 
 			echo json_encode($response);
@@ -683,7 +1206,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar serviços'];
 			}else{
 				$idService = $this->input->post('idService');
-				$this->modelServices->delete('services', 'id_service', $idService);
+				$this->service->delete('services', 'id_service', $idService);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Serviço excluido com sucesso!'];
 			}
@@ -701,7 +1224,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar passeios'];
 			}else{
 				$idTravel = $this->input->post('idTravel');
-				$this->modelTravels->delete('travels', 'id_travel', $idTravel);
+				$this->travel->delete('travels', 'id_travel', $idTravel);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Passeio excluido com sucesso!'];
 			}
@@ -719,7 +1242,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar banners'];
 			}else{
 				$idBanner = $this->input->post('idBanner');
-				$this->modelFeaturedBanners->delete('banners', 'id_banner', $idBanner);
+				$this->banner->delete('banners', 'id_banner', $idBanner);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Banner excluido com sucesso!'];
 			}
@@ -737,7 +1260,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar destaques'];
 			}else{
 				$idHighlight = $this->input->post('idHighlight');
-				$this->modelHighlights->delete('highlights', 'id_highlight', $idHighlight);
+				$this->highlight->delete('highlights', 'id_highlight', $idHighlight);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Destaque excluido com sucesso!'];
 			}
@@ -755,7 +1278,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar usuários'];
 			}else{
 				$idMenuOption = $this->input->post('idMenuOption');
-				$this->modelMenuOptions->delete('menu_options', 'id_menu', $idMenuOption);
+				$this->menu->delete('menu_options', 'id_menu', $idMenuOption);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Menu/link excluido com sucesso!'];
 			}
@@ -773,7 +1296,7 @@ class Admin extends Base {
 				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar redes sociais'];
 			}else{
 				$idSocialMedia = $this->input->post('idSocialMedia');
-				$this->modelSocialMedias->delete('social_medias', 'id_social_media', $idSocialMedia);
+				$this->socialMedia->delete('social_medias', 'id_social_media', $idSocialMedia);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Rede social excluida com sucesso!'];
 			}
@@ -791,9 +1314,63 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar usuários'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$users = $this->modelUsers->searchUsers($keyWord);
+				$users = $this->user->searchUsers($keyWord);
 
 				$response = ['users' => $users];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchCategories()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar categorias'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$categories = $this->category->searchCategories($keyWord);
+
+				$response = ['categories' => $categories];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchTestimonies()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar depoimentos'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$testimonies = $this->testimony->searchTestimonies($keyWord);
+
+				$response = ['testimonies' => $testimonies];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchImages()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar imagens'];
+			}else{
+				$idTravel = $this->input->post('idTravel');
+				$images = $this->image->searchImages($idTravel);
+
+				$response = ['images' => $images];
 			}
 
 			echo json_encode($response);
@@ -809,7 +1386,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar serviços'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$services = $this->modelServices->searchServices($keyWord);
+				$services = $this->service->searchServices($keyWord);
 
 				$response = ['services' => $services];
 			}
@@ -827,7 +1404,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar destaques'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$highlights = $this->modelHighlights->searchHighlights($keyWord);
+				$highlights = $this->highlight->searchHighlights($keyWord);
 
 				$response = ['highlights' => $highlights];
 			}
@@ -845,7 +1422,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar banners'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$banners = $this->modelFeaturedBanners->searchBanners($keyWord);
+				$banners = $this->banner->searchBanners($keyWord);
 
 				$response = ['banners' => $banners];
 			}
@@ -863,7 +1440,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar passeios'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$travels = $this->modelTravels->searchTravels($keyWord);
+				$travels = $this->travel->searchTravels($keyWord);
 
 				$response = ['travels' => $travels];
 			}
@@ -881,7 +1458,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar opções do menu'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$menuOption = $this->modelMenuOptions->searchMenuOptions($keyWord);
+				$menuOption = $this->menu->searchMenuOptions($keyWord);
 
 				$response = ['menuOptions' => $menuOption];
 			}
@@ -899,7 +1476,7 @@ class Admin extends Base {
 				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar redes sociais'];
 			}else{
 				$keyWord = $this->input->post('keyWord');
-				$socialMedias = $this->modelSocialMedias->searchSocialMedia($keyWord);
+				$socialMedias = $this->socialMedia->searchSocialMedia($keyWord);
 
 				$response = ['menuOptions' => $socialMedias];
 			}
@@ -944,7 +1521,7 @@ class Admin extends Base {
 					$this->upload->initialize($config);
 
 					if ($this->upload->do_upload('image')){
-						$featuredBanner = new $this->modelFeaturedBanners($title, $description, $buttonContent, $buttonLink, $newImageName);
+						$featuredBanner = new $this->banner($title, $description, $buttonContent, $buttonLink, $newImageName);
 						$featuredBanner->insert();
 
 						$response = ['type' => 'success', 'message' => 'Banner cadastrado com sucesso!', 'title' => 'Boa!'];
@@ -992,7 +1569,7 @@ class Admin extends Base {
 					$this->upload->initialize($config);
 
 					if ($this->upload->do_upload('image')){
-						$highlight = new $this->modelHighlights(null, $title, $description, 0, $newImageName);
+						$highlight = new $this->highlight(null, $title, $description, 0, $newImageName);
 						$highlight->insert();
 
 						$response = ['type' => 'success', 'message' => 'Destaque cadastrado com sucesso!', 'title' => 'Boa!'];
@@ -1041,7 +1618,7 @@ class Admin extends Base {
 					$this->upload->initialize($config);
 
 					if ($this->upload->do_upload('featured-image')){
-						$travel = new $this->modelTravels(null, $title, $description, $price, $newImageName);
+						$travel = new $this->travel(null, $title, $description, $price, $newImageName);
 						$travel->insert();
 
 						$response = ['type' => 'success', 'message' => 'Passeio cadastrado com sucesso! Para inserir imagens, basta editá-lo', 'title' => 'Boa!'];
@@ -1066,7 +1643,7 @@ class Admin extends Base {
 			}else{
 				$idHighlight = $this->input->post('idHighlight');
 				$status = $this->input->post('status');
-				$highlights = $this->modelHighlights->getAllHighlightsActive();
+				$highlights = $this->highlight->getAllHighlightsActive();
 
 				if(count($highlights) >= 3 && $status){
 					$response = ['type' => 'error', 'message' => 'Só pode existir três destaques ativos', 'title' => 'Erro!'];
@@ -1078,7 +1655,7 @@ class Admin extends Base {
 							'active' => $status
 						];
 
-						$this->modelHighlights->edit('highlights', $data, 'id_highlight', $idHighlight);
+						$this->highlight->edit('highlights', $data, 'id_highlight', $idHighlight);
 						$response = ['type' => 'success', 'message' => 'Destaque editado com sucesso', 'title' => 'Boa!'];
 					}
 				}

@@ -23,7 +23,7 @@
         <div class="row">
           <?php foreach ($highlights as $highlight): ?>
           <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
-            <a href="#" class="unit-1 text-center">
+            <a href="#" class="unit-1 text-center" onclick="openModalHighlight(<?= $highlight->getHighlightId() ?>)">
               <img src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="Image" class="img-fluid">
               <div class="unit-1-text">
                 <h3 class="unit-1-heading"><?= $highlight->getTitle() ?></h3>
@@ -77,7 +77,7 @@
         <div class="row">
           <?php foreach($travels as $travel): ?>
             <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-              <a href="#" class="unit-1 text-center">
+              <a href="<?= base_url().'passeio/' . $travel->getLinkTravel() ?>" class="limit-image unit-1 text-center">
                 <img src="<?= base_url() . 'public/images/featured-images-travels/' . $travel->getFeaturedImage() ?>" alt="Image" class="img-fluid">
                 <div class="unit-1-text">
                   <strong class="text-primary mb-2 d-block">R$<?= $travel->getPrice() ?></strong>
@@ -134,31 +134,25 @@
       <div class="container">
         <div class="row justify-content-center mb-5">
           <div class="col-md-7 text-center">
-            <h2 class="font-weight-light text-black">Our Blog</h2>
-            <p class="color-black-opacity-5">See Our Daily News &amp; Updates</p>
+            <h2 class="font-weight-light text-black">Conheça nosso blog!</h2>
+            <p class="color-black-opacity-5">Todas novidades e notícias para você!</p>
           </div>
         </div>
         <div class="row mb-3 align-items-stretch">
+          <?php foreach ($publications as $publication): ?>
           <div class="col-md-6 col-lg-6 mb-4 mb-lg-4">
             <div class="h-entry">
-              <img src="<?= base_url() ?>public/images/hero_bg_1.jpg" alt="Image" class="img-fluid">
-              <h2 class="font-size-regular"><a href="#">How to Plan Your Vacation</a></h2>
-              <div class="meta mb-4">by Theresa Winston <span class="mx-2">&bullet;</span> Jan 18, 2019 at 2:00 pm <span class="mx-2">&bullet;</span> <a href="#">News</a></div>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eligendi nobis ea maiores sapiente veritatis reprehenderit suscipit quaerat rerum voluptatibus a eius.</p>
-            </div> 
-          </div>
-          <div class="col-md-6 col-lg-6 mb-4 mb-lg-4">
-            <div class="h-entry">
-              <img src="<?= base_url() ?>public/images/hero_bg_2.jpg" alt="Image" class="img-fluid">
-              <h2 class="font-size-regular"><a href="#">How to Plan Your Vacation</a></h2>
-              <div class="meta mb-4">by Theresa Winston <span class="mx-2">&bullet;</span> Jan 18, 2019 at 2:00 pm <span class="mx-2">&bullet;</span> <a href="#">News</a></div>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus eligendi nobis ea maiores sapiente veritatis reprehenderit suscipit quaerat rerum voluptatibus a eius.</p>
+              <img src="<?= base_url() . 'public/images/publications/' . $publication->getImagePath() ?>" alt="Image" class="img-fluid">
+              <h2 class="font-size-regular"><a href="<?= base_url() . 'blog/post/' . $publication->getLink() ?>"><?= $publication->getTitle() ?></a></h2>
+              <div class="meta mb-4"><?= $publication->getPublicationDate() ?><span class="mx-2">&bullet;</span><a href="<?= base_url() . 'blog/categorias/' . $publication->getCategory()->getLink() ?>"><?= $publication->getCategory()->getName() ?></a></div>
+              <p><?= $publication->getResumedContent() ?></p>
             </div>
           </div>
+          <?php endforeach ?>
         </div>
         <div class="row">
           <div class="col-12 text-center">
-            <a href="#" class="btn btn-outline-primary border-2 py-3 px-5">View All Blog Posts</a>
+            <a href="<?= base_url() . 'blog' ?>" class="btn btn-outline-primary border-2 py-3 px-5">Ver mais</a>
           </div>
         </div>
       </div>
@@ -174,3 +168,34 @@
         </div>
       </div>
     </div>
+    
+    <div id="modal-highlight" class="out-display-none">
+      <div class="site-section block-13 bg-light">
+        <i class="fas fa-times-circle"></i>
+        <div class="container">
+          <div class="row justify-content-center mb-5">
+            <div class="col-md-7">
+              <h2 class="font-weight-light text-black text-center" id="title-modal-highlight"></h2>
+            </div>
+          </div>
+
+          <div class="item">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12 mb-5">
+                  <img src="" class="image-display" alt="Image" id="image-highlight" class="img-md-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row justify-content-center mb-5">
+            <div class="col-md-7">
+              <h2 class="font-weight-light text-black text-center" id="description-modal-highlight"></h2>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="background-modal out-display-none" id="background-modal"></div>

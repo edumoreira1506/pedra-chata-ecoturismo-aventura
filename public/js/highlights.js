@@ -126,7 +126,6 @@ const searchHighlights = keyWord => {
 		data: {keyWord},
 		success: function(jsonResponse){
 			var response = JSON.parse(jsonResponse);
-			console.log(response);
 			var html = '';
 			for(i in response.highlights){
 				if(response.highlights[i].active == "1"){

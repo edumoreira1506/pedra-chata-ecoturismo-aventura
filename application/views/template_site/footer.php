@@ -24,6 +24,18 @@
                   <?php endforeach ?>
                 </ul>
               </div>
+              <div class="col-md-6 col-lg-6">
+                <ul class="list-unstyled">
+                  <?php foreach ($travels as $travel): ?>
+                    <li>
+                      <a href="<?= base_url().'passeio/' . $travel->getLinkTravel() ?>"><?= $travel->getTitle(); ?></a>
+                    </li>
+                  <?php endforeach ?>
+                  <?php foreach ($categories as $category): ?>
+                    <li><a href="<?= base_url().'blog/categorias/' . $category->getLink() ?>"><?= $category->getName(); ?></a></li>
+                  <?php endforeach ?>
+                </ul>
+              </div>
             </div>
 
             

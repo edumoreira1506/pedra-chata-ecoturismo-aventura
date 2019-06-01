@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 30-Maio-2019 às 22:21
+-- Generation Time: 01-Jun-2019 às 22:52
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -57,6 +57,14 @@ CREATE TABLE `categories` (
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Extraindo dados da tabela `categories`
+--
+
+INSERT INTO `categories` (`id_category`, `name`, `description`) VALUES
+(2, 'Categoria', 'dsadsasdada'),
+(3, 'Nova categoria', 'dsadsa');
+
 -- --------------------------------------------------------
 
 --
@@ -90,6 +98,14 @@ CREATE TABLE `images_travels` (
   `image_path` varchar(255) NOT NULL,
   `id_travel` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `images_travels`
+--
+
+INSERT INTO `images_travels` (`id_image`, `image_path`, `id_travel`) VALUES
+(4, '201906010334538753.png', 3),
+(6, '20190601050251_MG_0077.jpg', 3);
 
 -- --------------------------------------------------------
 
@@ -126,7 +142,8 @@ CREATE TABLE `newsletter_subscribers` (
 --
 
 INSERT INTO `newsletter_subscribers` (`id_subscriber`, `email`) VALUES
-(1, 'emdesigneroficial@gmail.com');
+(1, 'emdesigneroficial@gmail.com'),
+(2, 'larissanicoli19@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -155,6 +172,14 @@ CREATE TABLE `publications` (
   `publication_date` datetime DEFAULT CURRENT_TIMESTAMP,
   `id_category` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `publications`
+--
+
+INSERT INTO `publications` (`id_publication`, `title`, `content`, `image_path`, `publication_date`, `id_category`) VALUES
+(1, 'Nome auiiiaa', 'undefined', '20190601103720adult-beautiful-close-up-1776862.jpg', '2019-06-01 17:37:20', 2),
+(3, 'Publicação da nova', 'Que isso meu mano isso é apenas um teste!', '20190601104925cigarette-1642232_1920.jpg', '2019-06-01 17:49:25', 3);
 
 -- --------------------------------------------------------
 
@@ -220,8 +245,19 @@ CREATE TABLE `submenu_options` (
 CREATE TABLE `testimonies` (
   `id_testimony` int(11) NOT NULL,
   `person_name` varchar(255) NOT NULL,
-  `image_path` varchar(255) NOT NULL
+  `image_path` varchar(255) NOT NULL,
+  `testimony` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `testimonies`
+--
+
+INSERT INTO `testimonies` (`id_testimony`, `person_name`, `image_path`, `testimony`) VALUES
+(1, 'Eduardo Moreira', '20190601055445_MG_0077.jpg', 'Realmente impresa muito boa de qualidade!!!'),
+(3, 'Larissa', '20190601061815adult-beautiful-close-up-1776862.jpg', 'Muito bom melhor empresa de toda região!'),
+(4, 'Heverton', '20190601061858shutterstock_1061676251.jpg', 'Pessoa depoimento'),
+(5, 'Claudio', '20190601061939Capa_(2).jpg', 'Top top top');
 
 -- --------------------------------------------------------
 
@@ -242,7 +278,8 @@ CREATE TABLE `travels` (
 --
 
 INSERT INTO `travels` (`id_travel`, `featured_image`, `title`, `description`, `price`) VALUES
-(2, '2019053004380510.png', 'aaaaaaaa', 'dsadsadsasdaas', 152);
+(2, '2019053004380510.png', 'aaaaaaaa', 'dsadsadsasdaas', 152),
+(3, '20190601032224addict-addiction-ashtray-46183.jpg', 'dsasda', 'qqqqqqq', 3215);
 
 -- --------------------------------------------------------
 
@@ -370,7 +407,7 @@ ALTER TABLE `banners`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_category` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `highlights`
@@ -382,7 +419,7 @@ ALTER TABLE `highlights`
 -- AUTO_INCREMENT for table `images_travels`
 --
 ALTER TABLE `images_travels`
-  MODIFY `id_image` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_image` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `menu_options`
@@ -394,7 +431,7 @@ ALTER TABLE `menu_options`
 -- AUTO_INCREMENT for table `newsletter_subscribers`
 --
 ALTER TABLE `newsletter_subscribers`
-  MODIFY `id_subscriber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_subscriber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `persons_of_team`
@@ -406,7 +443,7 @@ ALTER TABLE `persons_of_team`
 -- AUTO_INCREMENT for table `publications`
 --
 ALTER TABLE `publications`
-  MODIFY `id_publication` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_publication` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -430,13 +467,13 @@ ALTER TABLE `submenu_options`
 -- AUTO_INCREMENT for table `testimonies`
 --
 ALTER TABLE `testimonies`
-  MODIFY `id_testimony` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_testimony` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `travels`
 --
 ALTER TABLE `travels`
-  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_travel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `users`

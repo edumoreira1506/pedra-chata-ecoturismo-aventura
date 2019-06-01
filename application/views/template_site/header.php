@@ -50,7 +50,7 @@
     <div class="row align-items-center">
 
       <div class="col-6 col-xl-2">
-        <h1 class="mb-0"><a href="index.html" class="text-black h2 mb-0">Travelers</a></h1>
+        <h1 class="mb-0"><a href="<?= base_url() ?>" class="text-black h2 mb-0">Travelers</a></h1>
     </div>
     <div class="col-10 col-md-8 d-none d-xl-block">
         <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
@@ -59,17 +59,26 @@
             <?php foreach ($menuOptions as $menuOption): ?>
               <li>
                 <a href="<?= base_url() . $menuOption->getLink(); ?>"><?= $menuOption->getName(); ?></a>
-            </li>
-        <?php endforeach ?>
-                <!-- <li class="has-children">
-                  <a href="destination.html">Destinations</a>
-                  <ul class="dropdown">
-                    <li><a href="#">Japan</a></li>
-                    <li><a href="#">Europe</a></li>
-                    <li><a href="#">China</a></li>
-                    <li><a href="#">France</a></li>
-                  </ul>
-              </li> -->
+              </li>
+            <?php endforeach ?>
+            <li class="has-children">
+            <a href="<?= base_url() . 'passeios' ?>">Passeios</a>
+            <ul class="dropdown">
+            <?php foreach ($travels as $travel): ?>
+                    <li><a href="<?= base_url().'passeio/' . $travel->getLinkTravel() ?>"><?= $travel->getTitle(); ?></a></li>
+            <?php endforeach ?>
+            
+          </ul>
+          </li>
+          <li class="has-children">
+            <a href="<?= base_url() . 'blog' ?>">Blog</a>
+            <ul class="dropdown">
+            <?php foreach ($categories as $category): ?>
+                    <li><a href="<?= base_url().'blog/categorias/' . $category->getLink() ?>"><?= $category->getName(); ?></a></li>
+            <?php endforeach ?>
+            
+          </ul>
+          </li>
           </ul>
       </nav>
   </div>

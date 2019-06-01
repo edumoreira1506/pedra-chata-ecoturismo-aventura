@@ -17,6 +17,7 @@
 <link href="<?= base_url() ?>public/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<?= base_url() ?>public/css/my.css" rel="stylesheet" />
 <link href="<?= base_url() ?>public/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
+<link href="<?= base_url() ?>public/js/summernote/summernote-bs4.css" rel="stylesheet" />
 <script type="text/javascript">
     const baseUrl = '<?= base_url(); ?>';
     const active = '<?= $active ?>'; 
@@ -82,6 +83,30 @@
     <a href="servicos">
       <i class="fas fa-network-wired"></i>
       <p>Serviços</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="galeria">
+      <i class="fas fa-image"></i>
+      <p>Galeria de passeios</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="depoimentos">
+      <i class="fas fa-user"></i>
+      <p>Depoimentos</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="categorias">
+      <i class="fab fa-blogger"></i>
+      <p>Categorias do Blog</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="postagens">
+      <i class="fab fa-blogger"></i>
+      <p>Postagens do Blog</p>
   </a>
 </li>
 <li class="active-pro">

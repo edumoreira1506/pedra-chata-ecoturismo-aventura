@@ -36,6 +36,13 @@ class Travels_model extends Base_model
 		return $this->description;
 	}
 
+	public function getLinkTravel()
+	{
+		$arrayTravel = explode(' ', $this->title);
+		$stringTravel = implode('-', $arrayTravel);
+		return $stringTravel;
+	}
+
 	public function getPrice()
 	{
 		return $this->price;
@@ -95,6 +102,24 @@ class Travels_model extends Base_model
 		$this->db->where('id_travel', $idTravel); 
         $this->db->limit(1);
         return $this->db->get('travels')->row();
+	}
+
+	public function getTravelByTitle($title)
+	{
+		$this->db->select('*');
+		$this->db->where('LOWER(title)', strtolower($title)); 
+        $this->db->limit(1);
+        $databaseTravel = $this->db->get('travels')->row();
+
+        $travel = new Travels_model(
+        	$databaseTravel->id_travel,
+        	$databaseTravel->title,
+        	$databaseTravel->description,
+        	$databaseTravel->price,
+        	$databaseTravel->featured_image
+        );
+
+        return $travel;
 	}
 
 }
