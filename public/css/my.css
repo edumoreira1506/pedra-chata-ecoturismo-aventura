@@ -21,12 +21,12 @@
 	margin: 0 auto;
 }
 
-#modal-register-publication, #modal-edit-category, #modal-new-category, #modal-register-testimony, #modal-edit-testimony, #modal-images, #modal-highlight, #modal-edit-image, #modal-register-image, #modal-edit-travel, #modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner, #modal-edit-banner, #modal-register-highlight, #modal-edit-highlight, #modal-register-travel, #modal-register-service, #modal-edit-service{
-	position: absolute;
+#modal-edit-person, #modal-new-person, #modal-edit-publication, #modal-register-publication, #modal-edit-category, #modal-new-category, #modal-register-testimony, #modal-edit-testimony, #modal-images, #modal-highlight, #modal-edit-image, #modal-register-image, #modal-edit-travel, #modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner, #modal-edit-banner, #modal-register-highlight, #modal-edit-highlight, #modal-register-travel, #modal-register-service, #modal-edit-service{
+	position: fixed;
 	bottom: 50%;
-	right: 50%;
+	right: 42%;
 	transform: translate(50%,50%);
-	width: 88%;
+	width: 76%;
 	z-index: 999;
 }
 

@@ -75,7 +75,7 @@
         <div class="row">
           <div class="col-md-6 pr-1">
             <div class="form-group">
-              <label for="person-name">Título</label>
+              <label for="title">Título</label>
               <input type="text" class="form-control" id="title" name="title" placeholder="Título da publicação" required>
             </div>
           </div>
@@ -109,6 +109,54 @@
           <div class="col-md-6 pl-1">
             <button class="btn btn-round btn-primary" type="submit">Criar</button>
             <button class="btn btn-round btn-primary" type="submit" id="close-modal-register-publication">Fechar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card out-display-none" id="modal-edit-publication">
+    <div class="card-header">
+      <h5 class="title">Editar publicação</h5>
+    </div>
+    <div class="card-body">
+      <form id="edit-publication">
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-title">Título</label>
+              <input type="text" class="form-control" id="edit-title" name="title" placeholder="Título da publicação" required>
+              <input type="hidden" id="edit-publication-id" name="id-publication" required>
+            </div>
+          </div>
+          <div class="col-md-6 pr-1">
+            <div>
+              <label for="edit-image">Imagem destacada</label>
+              <input type="file" id="edit-image" class="form-control" name="image">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-1">
+            <div class="form-group">
+              <label for="edit-id-category">Categoria</label>
+              <select name="id-category" id="edit-id-category" class="form-control" required>
+                <?php foreach ($categories as $category): ?>
+                  <option value="<?= $category->getCategoryId() ?>"><?= $category->getName() ?></option>
+                <?php endforeach ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 pr-1">
+            <textarea id="edit-summernote">
+            </textarea>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pl-1">
+            <button class="btn btn-round btn-primary" type="submit">Editar</button>
+            <button class="btn btn-round btn-primary" type="submit" id="close-modal-edit-publication">Fechar</button>
           </div>
         </div>
       </form>

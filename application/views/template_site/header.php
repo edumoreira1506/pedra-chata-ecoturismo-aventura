@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
-  <title>Agência Pedra Chata</title>
+  <title>Pedra Chata</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -15,21 +15,16 @@
   <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.carousel.min.css">
   <link rel="stylesheet" href="<?= base_url() ?>public/css/owl.theme.default.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
   <link rel="stylesheet" href="<?= base_url() ?>public/css/bootstrap-datepicker.css">
-
   <link rel="stylesheet" href="<?= base_url() ?>public/fonts/flaticon/font/flaticon.css">
-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mediaelement@4.2.7/build/mediaelementplayer.min.css">
-
-
   <link rel="stylesheet" href="<?= base_url() ?>public/css/aos.css">
-
   <link rel="stylesheet" href="<?= base_url() ?>public/css/style.css">
+  <link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>public/others/favicon">
   <script>
     const activeLink = '<?= $activeLink ?>';
     const baseUrl = '<?= base_url(); ?>';
-</script>
+  </script>
 </head>
 <body>
 
@@ -50,7 +45,7 @@
     <div class="row align-items-center">
 
       <div class="col-6 col-xl-2">
-        <h1 class="mb-0"><a href="<?= base_url() ?>" class="text-black h2 mb-0">Travelers</a></h1>
+        <h1 class="mb-0"><a href="<?= base_url() ?>" class="text-black h2 mb-0" style="font-size: 24px;">PEDRA CHATA</a></h1>
     </div>
     <div class="col-10 col-md-8 d-none d-xl-block">
         <nav class="site-navigation position-relative text-right text-lg-center" role="navigation">
@@ -93,8 +88,6 @@
           <?php endforeach ?>
   </ul>
 </div>
-
-<div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
 
 </div>
 

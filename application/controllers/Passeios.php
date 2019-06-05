@@ -33,7 +33,7 @@ class Passeios extends Base {
 			'travels' => $travels,
 			'testimonies' => $testimonies,
 			'categories' => $categories,
-			'activeLink' => 1
+			'activeLink' => 3
 		];
 
 		$this->template->loadMain('travels/travels', $data);

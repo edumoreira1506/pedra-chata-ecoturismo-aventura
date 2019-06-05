@@ -3,7 +3,6 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url() ?>public/images/apple-icon.png">
   <link rel="icon" type="image/png" href="<?= base_url() ?>public/images/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
@@ -16,8 +15,10 @@
 <!-- CSS Files -->
 <link href="<?= base_url() ?>public/css/bootstrap.min.css" rel="stylesheet" />
 <link href="<?= base_url() ?>public/css/my.css" rel="stylesheet" />
+<link href="<?= base_url() ?>public/css/demo.css" rel="stylesheet" />
 <link href="<?= base_url() ?>public/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
 <link href="<?= base_url() ?>public/js/summernote/summernote-bs4.css" rel="stylesheet" />
+<link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>public/others/favicon">
 <script type="text/javascript">
     const baseUrl = '<?= base_url(); ?>';
     const active = '<?= $active ?>'; 
@@ -107,6 +108,12 @@
     <a href="postagens">
       <i class="fab fa-blogger"></i>
       <p>Postagens do Blog</p>
+  </a>
+</li>
+<li class="active-pro">
+    <a href="equipe">
+      <i class="fas fa-user-friends"></i>
+      <p>Integrantes da Equipe</p>
   </a>
 </li>
 <li class="active-pro">

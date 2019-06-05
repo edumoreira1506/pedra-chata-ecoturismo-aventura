@@ -58,8 +58,8 @@ class Publications_model extends Base_model
 
 	public function getResumedContent()
 	{
-		if(strlen($this->content) > 200){
-			return substr($this->content, 0, 200);
+		if(strlen($this->content) > 400){
+			return substr($this->content, 0, 400);
 		}else{
 			return $this->content;
 		}
@@ -83,6 +83,7 @@ class Publications_model extends Base_model
 		$this->db->from('publications');
 		$this->db->join('categories','categories.id_category = publications.id_category');
 		$this->db->where('publications.id_category', $idCategory); 
+		$this->db->order_by("publication_date", "asc"); 
         $this->db->limit(10);
         $dataBasePublications = $this->db->get()->result();
 
@@ -114,8 +115,9 @@ class Publications_model extends Base_model
 		$this->db->select("name, description, id_publication, title, content, image_path,  DATE_FORMAT(publication_date,'%d/%m/%Y às %H:%i') AS publication_date");
 		$this->db->from('publications');
 		$this->db->join('categories','categories.id_category = publications.id_category');
+		$this->db->order_by("publication_date", "asc"); 
 
-		if($limit != null && $start  != null){
+		if(is_numeric($limit) && is_numeric($start)){
 			$this->db->limit($limit, $start);
 		}
 
@@ -144,6 +146,37 @@ class Publications_model extends Base_model
 		return $publications;
 	}
 
+	public function getPublicationsAjax($limit = null, $start = null)
+	{
+		$this->db->select("name, description, id_publication, title, IF(CHAR_LENGTH(content) > 400, SUBSTRING(content, 1, 400), content) AS content, image_path,  DATE_FORMAT(publication_date,'%d/%m/%Y às %H:%i') AS publication_date");
+		$this->db->from('publications');
+		$this->db->join('categories','categories.id_category = publications.id_category');
+		$this->db->order_by("publication_date", "asc"); 
+
+		if(is_numeric($limit) && is_numeric($start)){
+			$this->db->limit($limit, $start);
+		}
+
+		$dataBasePublications = $this->db->get()->result();
+		return $dataBasePublications;
+	}
+
+	public function getPublicationsFromCategoryAjax($limit = null, $start = null, $categoryName)
+	{
+		$this->db->select("name, description, id_publication, title, IF(CHAR_LENGTH(content) > 400, SUBSTRING(content, 1, 400), content) AS content, image_path,  DATE_FORMAT(publication_date,'%d/%m/%Y às %H:%i') AS publication_date");
+		$this->db->from('publications');
+		$this->db->join('categories','categories.id_category = publications.id_category');
+		$this->db->where('name', $categoryName);
+		$this->db->order_by("publication_date", "asc"); 
+
+		if(is_numeric($limit) && is_numeric($start)){
+			$this->db->limit($limit, $start);
+		}
+
+		$dataBasePublications = $this->db->get()->result();
+		return $dataBasePublications;
+	}
+
 	public function insert()
 	{
 		$data = [
@@ -154,6 +187,44 @@ class Publications_model extends Base_model
 		];
 
 		$this->publicationId = $this->addGetId('publications', $data);
+	}
+
+	public function searchPublications($keyWord)
+	{
+		$this->db->select('*');
+		$this->db->like('title', "$keyWord");
+		$this->db->or_like('content', "$keyWord");
+
+        $dataBasePublications  = $this->db->get('publications')->result();
+        return $dataBasePublications;
+	}
+
+	public function getPublicationById($idPublication)
+	{
+		$this->db->select('*');
+		$this->db->where('id_publication', $idPublication);
+		$this->db->limit(1);
+
+        $dataBasePublication = $this->db->get('publications')->row();
+        return $dataBasePublication;
+	}
+
+	public function getPublicationByName($publicationName)
+	{
+		$this->db->select("id_publication, title, content, image_path,  DATE_FORMAT(publication_date,'%d/%m/%Y às %H:%i') AS publication_date");
+		$this->db->where('LOWER(title)', strtolower($publicationName));
+		$this->db->limit(1);
+
+		$dataBasePublication = $this->db->get('publications')->row();
+
+		$publication = new Publications_model(
+			$dataBasePublication->title,
+			$dataBasePublication->content,
+			$dataBasePublication->image_path,
+			$dataBasePublication->publication_date
+		);
+
+		return $publication;
 	}
 
 }

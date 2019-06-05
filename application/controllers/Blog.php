@@ -33,12 +33,12 @@ class Blog extends Base {
 			$categories = $this->category->getAllCategories();
 
 			$data = [
-				'scripts' => ['default'],
+				'scripts' => ['default', 'category'],
 				'menuOptions' => $menuOptions,
 				'travels' => $travels,
 				'socialMedias' => $socialMedias,
 				'categories' => $categories,
-				'activeLink' => 2,
+				'activeLink' => 4,
 				'category' => $category,
 				'publications' => $publications
 			];
@@ -57,16 +57,64 @@ class Blog extends Base {
 		$categories = $this->category->getAllCategories();
 
 		$data = [
+			'scripts' => ['default', 'blog'],
+			'menuOptions' => $menuOptions,
+			'travels' => $travels,
+			'socialMedias' => $socialMedias,
+			'categories' => $categories,
+			'activeLink' => 4,
+			'publications' => $publications
+		];
+
+		$this->template->loadMain('blog/home', $data);
+	}
+
+	public function post()
+	{
+		$postName = $this->uri->segment(3);
+		$arrayPostName = explode('-', $postName);
+		$postName = implode(' ', $arrayPostName);
+
+		$menuOptions = $this->menu->getAllMenuOptions();
+		$socialMedias = $this->socialMedia->getAllSocialMedias();
+		$travels = $this->travel->getAllTravels();
+		$categories = $this->category->getAllCategories();
+		$publication = $this->publication->getPublicationByName($postName);
+
+		$data = [
 			'scripts' => ['default'],
 			'menuOptions' => $menuOptions,
 			'travels' => $travels,
 			'socialMedias' => $socialMedias,
 			'categories' => $categories,
-			'activeLink' => 2,
-			'publications' => $publications
+			'activeLink' => 4,
+			'publication' => $publication
 		];
 
-		$this->template->loadMain('blog/home', $data);
+		$this->template->loadMain('blog/post', $data);
+	}
+
+	public function getMorePosts()
+	{
+		if($this->input->is_ajax_request()){
+			$counterPost = $this->input->post('counterPost');
+			$publications = $this->publication->getPublicationsAjax(10, $counterPost);
+			echo json_encode($publications);
+		}else{
+			redirect(base_url());
+		}
+	}
+
+	public function getMorePostsCategory()
+	{
+		if($this->input->is_ajax_request()){
+			$counterPost = $this->input->post('counterPost');
+			$categoryName = $this->input->post('categoryName');
+			$publications = $this->publication->getPublicationsFromCategoryAjax(10, $counterPost, $categoryName);
+			echo json_encode($publications);
+		}else{
+			redirect(base_url());
+		}
 	}
 
 }

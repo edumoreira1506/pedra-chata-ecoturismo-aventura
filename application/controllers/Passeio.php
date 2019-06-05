@@ -43,7 +43,7 @@ class Passeio extends Base {
 				'images' => $images,
 				'categories' => $categories,
 				'testimonies' => $testimonies,
-				'activeLink' => 1
+				'activeLink' => 3
 			];
 
 			$this->template->loadMain('travels/travel', $data);

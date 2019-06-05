@@ -20,6 +20,10 @@ class Admin extends Base {
 		$this->load->model('testimonies_model','testimony');
 		$this->load->model('categories_model','category');
 		$this->load->model('publications_model','publication');
+		$this->load->model('team_person_model','person');
+		$this->load->model('newsletter_model','lead');
+		$this->load->model('accesses_model','access');
+		$this->load->model('contact_model','contact');
 	}
 
 	public function index()
@@ -39,15 +43,33 @@ class Admin extends Base {
 	public function painel()
 	{
 		if ($this->session->userdata('logado')) {
+			$leads = $this->lead->getAllLeads();
+			$deviceAccesses = $this->access->getDeviceAccesses();
+			$locationAcessess = $this->access->getLocationAccesses();
+			$contacts = $this->contact->getAllContacts();
 
 			$data = [
-				'scripts' => ['admin'],
-				'active' => 0
+				'scripts' => ['admin', 'panel'],
+				'active' => 0,
+				'leads' => $leads,
+				'deviceAccesses' => $deviceAccesses,
+				'locationAcessess' => $locationAcessess,
+				'contacts' => $contacts
 			];
 			
 			$this->template->loadAdmin('admin/panel', $data);
 		}else{
 			redirect('admin');
+		}
+	}
+
+	public function getAccesses()
+	{
+		if ($this->session->userdata('logado') && $this->input->is_ajax_request()) {
+			$accesses = $this->access->getAccess12MonthsThisYear();
+			echo json_encode($accesses);
+		}else{
+			redirect(base_url());
 		}
 	}
 
@@ -237,6 +259,23 @@ class Admin extends Base {
 			];
 			
 			$this->template->loadAdmin('admin/publications', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function equipe()
+	{
+		if ($this->session->userdata('logado')) {
+			$persons = $this->person->getAllPersonsTeam();
+
+			$data = [
+				'scripts' => ['admin', 'persons'],
+				'active' => 12,
+				'persons' => $persons
+			];
+			
+			$this->template->loadAdmin('admin/persons', $data);
 		}else{
 			redirect('admin');
 		}
@@ -509,6 +548,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function getPerson()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar pessoas'];
+			}else{
+				$idPerson = $this->input->post('idPerson');
+				$person = $this->person->getPersonById($idPerson);
+				$response = $person;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function getTestimony()
 	{
 		if($this->input->is_ajax_request()){
@@ -586,6 +642,23 @@ class Admin extends Base {
 				$idBanner = $this->input->post('idBanner');
 				$banner = $this->banner->getBannerById($idBanner);
 				$response = $banner;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function getPublication()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para editar publicações'];
+			}else{
+				$idPublication = $this->input->post('idPublication');
+				$publication = $this->publication->getPublicationById($idPublication);
+				$response = $publication;
 			}
 
 			echo json_encode($response);
@@ -873,6 +946,65 @@ class Admin extends Base {
 		}
 	}
 
+	public function editPerson()
+	{
+		if($this->input->is_ajax_request()){
+			$name = $this->input->post('name');
+			$idPerson = $this->input->post('id-person');
+			$instagram = $this->input->post('instagram');
+			$facebook = $this->input->post('facebook');
+			$description = $this->input->post('description');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($name == "" || $name == null || $idPerson == "" || $idPerson == null || $instagram == "" || $instagram == null || $facebook == "" || $facebook == null || $description == "" || $description == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				}else{
+					$data = [
+						'name' => $name,
+						'instagram' => $instagram,
+						'facebook' => $facebook,
+						'description' => $description
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/persons',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->person->edit('persons_of_team', $data, 'id_person', $idPerson);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Pessoa editada com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->person->edit('persons_of_team', $data, 'id_person', $idPerson);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Pessoa editada com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function editTestimony()
 	{
 		if($this->input->is_ajax_request()){
@@ -1040,6 +1172,63 @@ class Admin extends Base {
 		}
 	}
 
+	public function editPublication()
+	{
+		if($this->input->is_ajax_request()){
+			$title = $this->input->post('title');
+			$idPublication = $this->input->post('id-publication');
+			$content = $this->input->post('content');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($title == "" || $title == null || $idPublication == "" || $idPublication == null || $content == "" || $content == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+				}elseif(strlen($title) >= 30){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Título pode ter no máximo 30 caracteres'];
+				}else{
+					$data = [
+						'title' => $title,
+						'content' => $content
+					];
+
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images/publications',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['image_path'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->highlight->edit('publications', $data, 'id_publication', $idPublication);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Publicação editada com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$this->highlight->edit('publications', $data, 'id_publication', $idPublication);
+						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Publicação editada com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function editSocialMedia()
 	{
 		if($this->input->is_ajax_request()){
@@ -1119,6 +1308,23 @@ class Admin extends Base {
 				$this->user->delete('users', 'id_user', $userId);
 
 				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Usuário excluido com sucesso!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function deletePerson()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado para deletar pessoas da equipe'];
+			}else{
+				$idPerson = $this->input->post('idPerson');
+				$this->person->delete('persons_of_team', 'id_person', $idPerson);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Pessoa da equipe excluida com sucesso!'];
 			}
 
 			echo json_encode($response);
@@ -1317,6 +1523,42 @@ class Admin extends Base {
 				$users = $this->user->searchUsers($keyWord);
 
 				$response = ['users' => $users];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchPersons()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar integrantes da equipe'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$persons = $this->person->searchPersons($keyWord);
+
+				$response = ['persons' => $persons];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function searchPublications()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para buscar posts'];
+			}else{
+				$keyWord = $this->input->post('keyWord');
+				$publications = $this->publication->searchPublications($keyWord);
+
+				$response = ['publications' => $publications];
 			}
 
 			echo json_encode($response);
@@ -1525,6 +1767,57 @@ class Admin extends Base {
 						$featuredBanner->insert();
 
 						$response = ['type' => 'success', 'message' => 'Banner cadastrado com sucesso!', 'title' => 'Boa!'];
+					}else{
+						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+					}
+				} 
+
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function registerNewPerson()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para cadastrar pessoas na equipe', 'title' => 'Erro!'];
+			}else{
+				$name = $this->input->post('name');
+				$instagram = $this->input->post('instagram');
+				$facebook = $this->input->post('facebook');
+				$description = $this->input->post('description');
+				$image = $_FILES['image'];
+				$imageName = $image['name'];
+
+				if($name == null || $name == "" || $instagram == null || $instagram == "" || $facebook == null || $facebook == "" || $description == null || $description == "" || $image == null || $imageName == ""){
+					$response = ['type' => 'error', 'message' => 'Todos campos são obrigatórios', 'title' => 'Erro!'];
+				}elseif(strlen($name) >= 255){
+					$response = ['type' => 'error', 'message' => 'Nome pode ter no máximo 254 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($instagram) >= 255){
+					$response = ['type' => 'error', 'message' => 'Instagram pode ter no máximo 254 caracteres', 'title' => 'Erro!'];
+				}elseif(strlen($facebook) >= 255){
+					$response = ['type' => 'error', 'message' => 'Facebook pode ter no máximo 254 caracteres', 'title' => 'Erro!'];
+				}else{
+					$newImageName = date('Ymdhis').$imageName;
+					$config = [
+						'upload_path'   => '././public/images/persons',
+						'allowed_types' => 'png|jpeg|jpg|gif',
+						'file_name'     => $newImageName,
+						'max_size'      => '500000'
+					];  
+
+					$this->load->library('upload');
+					$this->upload->initialize($config);
+
+					if ($this->upload->do_upload('image')){
+						$person = new $this->person($name, $description, $facebook, $instagram, $newImageName);
+						$person->insert();
+
+						$response = ['type' => 'success', 'message' => 'Pessoa cadastrada com sucesso!', 'title' => 'Boa!'];
 					}else{
 						$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
 					}
