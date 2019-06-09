@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
-	<meta charset="utf-8" />
-	<link rel="apple-touch-icon" sizes="76x76" href="<?= base_url() ?>public/images/apple-icon.png">
-	<link rel="icon" type="image/png" href="<?= base_url() ?>public/images/favicon.png">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title>
-		Now UI Dashboard by Creative Tim
-	</title>
-	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-	<!--     Fonts and icons     -->
+	<!-- TÍTULO -->
+	<title>Pedra Chata - Acesso restrito</title>
+
+	<!-- ÍCONE -->
+	<link rel="shortcut icon" type="image/x-icon" href="<?= base_url() ?>public/others/favicon">
+
+	<!-- METAS -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Painel administrativo da Pedra Chata. Caniôns, cavernas, cachoeiras e muitas outras maravilhas da natureza. Confira!"/>
+	<meta name="keywords" content="cânion, pedra chata, itapeva, cachoeiras, cavernas, ecoturismo, aventura, maravilhas, natureza, petar,"/>
+	<meta name="robots" content="index, follow">
+	<meta property="og:locale" content="pt_BR" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Descubra os lugares mais bonitos do mundo em um só lugar!" />
+	<meta property="og:description" content="Trilhas, cachoeiras, cavernas, cânions e muito mais. Confira!" />
+	<meta property="og:url" content="<?= base_url() ?>" />
+	<meta property="og:site_name" content="Pedra Chata - Ecoturismo e Aventura" />
+	<meta property="article:publisher" content="https://www.facebook.com/pedrachataturismo" />
+	<meta property="og:image" content="<?= base_url() . 'public/others/image-share.jpg' ?>" />
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:description" content="Descubra os lugares mais bonitos do mundo em um só lugar!" />
+	<meta name="twitter:title" content="Trilhas, cachoeiras, cavernas, cânions e muito mais. Confira!" />
+	<meta name="twitter:image" content="<?= base_url() . 'public/others/image-share.jpg' ?>" />
+
+	<!-- CSS -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-	<!-- CSS Files -->
 	<link href="<?= base_url() ?>public/css/bootstrap.min.css" rel="stylesheet" />
 	<link href="<?= base_url() ?>public/css/now-ui-dashboard.css?v=1.3.0" rel="stylesheet" />
 	<link href="<?= base_url() ?>public/css/my.css" rel="stylesheet" />
+
+	<!-- SCRIPT BASE URL -->
 	<script type="text/javascript">
-		var baseUrl = '<?= base_url(); ?>';
+		const baseUrl = '<?= base_url(); ?>';
 	</script>
 </head>
 

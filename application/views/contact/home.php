@@ -1,8 +1,8 @@
-<div class="site-blocks-cover inner-page-cover" style="background-image: url(<?= base_url() . 'public/images/hero_bg_2.jpg' ?>);" data-aos="fade" data-stellar-background-ratio="0.5">
+<div class="site-blocks-cover inner-page-cover" style="background-image: url(<?= base_url() . 'public/images/' . $staticImages['CONTACT'][0]->getContent() ?>);" data-aos="fade" data-stellar-background-ratio="0.5">
   <div class="container">
     <div class="row align-items-center justify-content-center text-center">
       <div class="col-md-8" data-aos="fade-up" data-aos-delay="400">
-        <h1 class="text-white font-weight-light">Entre em contato</h1>
+        <h1 class="text-white font-weight-light"><?= $infos['CONTACT'][0]->getContent() ?></h1>
         <div>
           <?php foreach ($menuOptions as $menuOption): ?>
             <a href="<?= base_url() . $menuOption->getLink(); ?>"><?= $menuOption->getName(); ?><span class="mx-2 text-white">&bullet;</span></a>
@@ -47,15 +47,15 @@
       <div class="col-md-5">
         <div class="p-4 mb-3 bg-white">
           <p class="mb-0 font-weight-bold">Telefone/WhatsApp</p>
-          <p class="mb-4"><a href="tel:+5515997986248">(15) 99798-6248</a></p>
+          <p class="mb-4"><a href="tel:+5515997986248"><?= $infos['CONTACT'][1]->getContent() ?></a></p>
           <p class="mb-0 font-weight-bold">Email:</p>
-          <p class="mb-0"><a href="mailto:contato@pedrachata.com.br">contato@pedrachata.com.br</a></p>
+          <p class="mb-0"><a href="mailto:contato@pedrachata.com.br"><?= $infos['CONTACT'][2]->getContent() ?></a></p>
         </div>
         <div class="p-4 mb-3 bg-white">
-          <img src="<?= base_url() . 'public/images/hero_bg_1.jpg' ?>" alt="Image" class="img-fluid mb-4 rounded">
-          <h3 class="h5 text-black mb-3">More Info</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ad iure porro mollitia architecto hic consequuntur. Distinctio nisi perferendis dolore, ipsa consectetur? Fugiat quaerat eos qui, libero neque sed nulla.</p>
-          <p><a href="<?= base_url() . 'sobre' ?>" class="btn btn-primary px-4 py-2 text-white">Conheça-nos!</a></p>
+          <img src="<?= base_url() . 'public/images/' . $staticImages['CONTACT'][1]->getContent() ?>" alt="Image" class="img-fluid mb-4 rounded">
+          <h3 class="h5 text-black mb-3"><?= $infos['CONTACT'][3]->getContent() ?></h3>
+          <p><?= $infos['CONTACT'][4]->getAllContent() ?></p>
+          <p><a href="<?= base_url() . 'sobre' ?>" class="btn btn-primary px-4 py-2 text-white"><?= $infos['CONTACT'][5]->getAllContent() ?></a></p>
         </div>
       </div>
     </div>

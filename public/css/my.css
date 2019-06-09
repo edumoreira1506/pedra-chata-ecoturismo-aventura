@@ -15,13 +15,17 @@
 	max-height: 350px;
 }
 
+.center{
+	text-align: center;
+}
+
 .image-display{
 	max-width: 340px;
 	display: table;
 	margin: 0 auto;
 }
 
-#modal-edit-person, #modal-new-person, #modal-edit-publication, #modal-register-publication, #modal-edit-category, #modal-new-category, #modal-register-testimony, #modal-edit-testimony, #modal-images, #modal-highlight, #modal-edit-image, #modal-register-image, #modal-edit-travel, #modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner, #modal-edit-banner, #modal-register-highlight, #modal-edit-highlight, #modal-register-travel, #modal-register-service, #modal-edit-service{
+#modal-edit-info, #modal-edit-person, #modal-new-person, #modal-edit-publication, #modal-register-publication, #modal-edit-category, #modal-new-category, #modal-register-testimony, #modal-edit-testimony, #modal-images, #modal-highlight, #modal-edit-image, #modal-register-image, #modal-edit-travel, #modal-new-user, #modal-new-menu-option, #modal-edit-menu-option, #modal-register-social-media, #modal-edit-social-media, #modal-register-banner, #modal-edit-banner, #modal-register-highlight, #modal-edit-highlight, #modal-register-travel, #modal-register-service, #modal-edit-service{
 	position: fixed;
 	bottom: 50%;
 	right: 42%;

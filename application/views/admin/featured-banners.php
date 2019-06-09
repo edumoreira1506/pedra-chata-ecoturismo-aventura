@@ -39,12 +39,12 @@
       <div class="col-md-4">
         <div class="card card-user">
           <div class="image">
-            <img src="<?= base_url().'public/images/featured-banners/'.$banner->getImagePath() ?>" alt="...">
+            <img src="<?= base_url().'public/images/featured-banners/'.$banner->getImagePath() ?>" alt="Banner <?= $banner->getImagePath() ?>">
           </div>
           <div class="card-body">
             <div class="author">
               <a href="<?= $banner->getButtonLink(); ?>">
-                <img class="avatar border-gray" src="<?= base_url().'public/images/featured-banners/'.$banner->getImagePath() ?>" alt="...">
+                <img class="avatar border-gray" src="<?= base_url().'public/images/featured-banners/'.$banner->getImagePath() ?>" alt="Imagem <?= $banner->getTitle(); ?>">
                 <h5 class="title"><?= $banner->getButtonContent(); ?></h5>
               </a>
               <p class="description">
@@ -123,7 +123,7 @@
   </div>
   <div class="card out-display-none" id="modal-edit-banner">
     <div class="card-header">
-      <h5 class="title">Editar novo banner</h5>
+      <h5 class="title">Editar banner</h5>
     </div>
     <div class="card-body">
       <form id="edit-featured-banner">

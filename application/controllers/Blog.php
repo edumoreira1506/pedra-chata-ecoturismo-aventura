@@ -13,6 +13,8 @@ class Blog extends Base {
 		$this->load->model('social_medias_model', 'socialMedia');
 		$this->load->model('travels_model', 'travel');
 		$this->load->model('publications_model', 'publication');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function categorias()
@@ -23,7 +25,7 @@ class Blog extends Base {
 		}else{
 			$categoryNameArray = explode('-', $categoryName);
 			$categoryName = implode(' ', $categoryNameArray);
-
+			$categoryName = urldecode($categoryName);
 			$category = $this->category->getCategoryByName($categoryName);
 			$publications =  $this->publication->getAllPublicationsFromCategory($category->getCategoryId());
 
@@ -31,6 +33,8 @@ class Blog extends Base {
 			$socialMedias = $this->socialMedia->getAllSocialMedias();
 			$travels = $this->travel->getAllTravels();
 			$categories = $this->category->getAllCategories();
+			$infos = $this->info->getAllInfos();
+			$staticImages = $this->staticImages->getAllImages();
 
 			$data = [
 				'scripts' => ['default', 'category'],
@@ -40,7 +44,9 @@ class Blog extends Base {
 				'categories' => $categories,
 				'activeLink' => 4,
 				'category' => $category,
-				'publications' => $publications
+				'publications' => $publications,
+				'infos' => $infos,
+				'staticImages' => $staticImages,
 			];
 
 			$this->template->loadMain('blog/category', $data);
@@ -55,6 +61,8 @@ class Blog extends Base {
 		$socialMedias = $this->socialMedia->getAllSocialMedias();
 		$travels = $this->travel->getAllTravels();
 		$categories = $this->category->getAllCategories();
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$data = [
 			'scripts' => ['default', 'blog'],
@@ -63,7 +71,9 @@ class Blog extends Base {
 			'socialMedias' => $socialMedias,
 			'categories' => $categories,
 			'activeLink' => 4,
-			'publications' => $publications
+			'publications' => $publications,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('blog/home', $data);
@@ -80,6 +90,8 @@ class Blog extends Base {
 		$travels = $this->travel->getAllTravels();
 		$categories = $this->category->getAllCategories();
 		$publication = $this->publication->getPublicationByName($postName);
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$data = [
 			'scripts' => ['default'],
@@ -88,7 +100,9 @@ class Blog extends Base {
 			'socialMedias' => $socialMedias,
 			'categories' => $categories,
 			'activeLink' => 4,
-			'publication' => $publication
+			'publication' => $publication,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('blog/post', $data);

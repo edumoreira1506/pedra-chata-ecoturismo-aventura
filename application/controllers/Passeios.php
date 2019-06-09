@@ -14,6 +14,8 @@ class Passeios extends Base {
 		$this->load->model('social_medias_model', 'socialMedia');
 		$this->load->model('testimonies_model', 'testimony');
 		$this->load->model('categories_model','category');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function index()
@@ -23,6 +25,8 @@ class Passeios extends Base {
 
 		$testimonies = $this->testimony->getAllTestimonies();
 		$categories = $this->category->getAllCategories();
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$travels = $this->travel->getAllTravels();
 
@@ -33,7 +37,9 @@ class Passeios extends Base {
 			'travels' => $travels,
 			'testimonies' => $testimonies,
 			'categories' => $categories,
-			'activeLink' => 3
+			'activeLink' => 3,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('travels/travels', $data);

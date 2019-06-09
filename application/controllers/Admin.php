@@ -24,6 +24,8 @@ class Admin extends Base {
 		$this->load->model('newsletter_model','lead');
 		$this->load->model('accesses_model','access');
 		$this->load->model('contact_model','contact');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function index()
@@ -187,6 +189,40 @@ class Admin extends Base {
 			];
 			
 			$this->template->loadAdmin('admin/services', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function textos()
+	{
+		if ($this->session->userdata('logado')) {
+			$infos = $this->info->getAllInfos();
+
+			$data = [
+				'scripts' => ['admin', 'texts'],
+				'active' => 13,
+				'infos' => $infos
+			];
+			
+			$this->template->loadAdmin('admin/info', $data);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function imagens()
+	{
+		if ($this->session->userdata('logado')) {
+			$staticImages = $this->staticImages->getAllImages();
+
+			$data = [
+				'scripts' => ['admin', 'static-images'],
+				'active' => 14,
+				'staticImages' => $staticImages
+			];
+			
+			$this->template->loadAdmin('admin/static-images', $data);
 		}else{
 			redirect('admin');
 		}
@@ -548,6 +584,23 @@ class Admin extends Base {
 		}
 	}
 
+	public function getInfo()
+	{
+		if($this->input->is_ajax_request()){
+			if(!$this->session->userdata('logado')){
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado para textos ou imagens'];
+			}else{
+				$infoId = $this->input->post('infoId');
+				$info = $this->info->getInfoById($infoId);
+				$response = $info;
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function getPerson()
 	{
 		if($this->input->is_ajax_request()){
@@ -855,6 +908,32 @@ class Admin extends Base {
 		}
 	}
 
+	public function editInfo()
+	{
+		if($this->input->is_ajax_request()){
+			$infoId = $this->input->post('infoId');
+			$content = $this->input->post('content');
+
+			if($infoId == "" || $infoId == null || $content == "" || $content == null){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Todos campos são obrigatórios'];
+			}elseif(!$this->session->userdata('logado')){
+				$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Você precisa estar logado editar informações'];
+			}else{
+				$data = [
+					'content' => $content,
+					'last_update' => date('Y-m-d H:i:s')
+				];
+
+				$this->info->edit('static_informations', $data, 'id_static', $infoId);
+				$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Texto editado com sucesso'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
 	public function editTravel()
 	{
 		if($this->input->is_ajax_request()){
@@ -1104,6 +1183,53 @@ class Admin extends Base {
 					}else{
 						$this->image->edit('images_travels', $data, 'id_image', $idImage);
 						$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Imagem editada com sucesso'];
+					}
+
+				}
+			}else{
+				$response = ['type' => 'error', 'message' => 'Você precisa estar logado', 'title' => 'Erro!'];
+			}
+
+			echo json_encode($response);
+		}else{
+			redirect('admin');
+		}
+	}
+
+	public function editStaticImage()
+	{
+		if($this->input->is_ajax_request()){
+			$idImage = $this->input->post('id-image');
+			$image = $_FILES['image'];
+
+			if ($this->session->userdata('logado')) {
+				if($idImage == "" || $idImage == null || $image == null){
+					$response = ['title' => 'Ops', 'type' => 'error', 'message' => 'Imagem do passeio é obrigatório'];
+				}else{
+					if($image['name'] != ""){
+						$imageName = $image['name'];
+						$newImageName = date('Ymdhis').$imageName;
+
+						$config = [
+							'upload_path'   => '././public/images',
+							'allowed_types' => 'png|jpeg|jpg|gif',
+							'file_name'     => $newImageName,
+							'max_size'      => '500000'
+						];  
+
+						$this->load->library('upload');
+						$this->upload->initialize($config);
+
+						$data['content'] = $newImageName;
+
+						if ($this->upload->do_upload('image')){
+							$this->image->edit('static_images', $data, 'id_static', $idImage);
+							$response = ['title' => 'Sucesso', 'type' => 'success', 'message' => 'Imagem editada com sucesso'];
+						}else{
+							$response = ['type' => 'error', 'message' => 'Erro interno no upload', 'title' => 'Erro!'];
+						}
+					}else{
+						$response = ['title' => 'Erro!', 'type' => 'error', 'message' => 'Imagem é obrigatório'];
 					}
 
 				}

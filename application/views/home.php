@@ -37,7 +37,7 @@
   <div class="container">
     <div class="row justify-content-center mb-5">
       <div class="col-md-7">
-        <h2 class="font-weight-light text-black text-center">Testimonials</h2>
+        <h2 class="font-weight-light text-black text-center"><?= $infos['INITIAL'][0]->getContent(); ?></h2>
       </div>
     </div>
 
@@ -45,11 +45,11 @@
       <div class="container">
         <div class="row">
           <div class="col-lg-6 mb-5">
-            <img src="<?= base_url() ?>public/images/img_1.jpg" alt="Image" class="img-md-fluid">
+            <img src="<?= base_url() ?>public/images/<?= $staticImages['INITIAL'][0]->getContent() ?>" alt="Image" class="img-md-fluid">
           </div>
           <div class="overlap-left col-lg-6 bg-white p-md-5 align-self-center">
-            <p class="text-black lead">&ldquo;Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique dolorem quisquam laudantium, incidunt id laborum, tempora aliquid labore minus. Nemo maxime, veniam! Fugiat odio nam eveniet ipsam atque, corrupti porro&rdquo;</p>
-            <p class="">&mdash; <em>James Martin</em>, <a href="#">Traveler</a></p>
+            <p class="text-black lead"><?= $infos['INITIAL'][1]->getAllContent(); ?></p>
+            <p class=""><?= $infos['INITIAL'][2]->getContent(); ?></p>
           </div>
         </div>
       </div>
@@ -64,8 +64,8 @@
   <div class="container">
     <div class="row justify-content-center mb-5">
       <div class="col-md-7 text-center">
-        <h2 class="font-weight-light text-black">Passeios</h2>
-        <p class="color-black-opacity-5">Escolha seu destino!</p>
+        <h2 class="font-weight-light text-black"><?= $infos['INITIAL'][3]->getAllContent(); ?></h2>
+        <p class="color-black-opacity-5"><?= $infos['INITIAL'][4]->getAllContent(); ?></p>
       </div>
     </div>
     <div class="row">
@@ -85,12 +85,12 @@
 
 </div>
 
-<div class="site-blocks-cover overlay inner-page-cover" style="background-image: url(<?= base_url() ?>public/images/hero_bg_2.jpg); background-attachment: fixed;">
+<div class="site-blocks-cover overlay inner-page-cover" style="background-image: url(<?= base_url() ?>public/images/<?= $staticImages['INITIAL'][1]->getContent() ?>); background-attachment: fixed;">
   <div class="container">
     <div class="row align-items-center justify-content-center text-center">
       <div class="col-md-7" data-aos="fade-up" data-aos-delay="400">
-        <a href="https://vimeo.com/channels/staffpicks/93951774" class="play-single-big mb-4 d-inline-block popup-vimeo"><span class="icon-play"></span></a>
-        <h2 class="text-white font-weight-light mb-5 h1">Experience Our Outstanding Services</h2>
+        <a href="<?= $infos['INITIAL'][6]->getAllContent(); ?>" class="play-single-big mb-4 d-inline-block popup-vimeo"><span class="icon-play"></span></a>
+        <h2 class="text-white font-weight-light mb-5 h1"><?= $infos['INITIAL'][5]->getAllContent(); ?></h2>
       </div>
     </div>
   </div>
@@ -100,8 +100,8 @@
   <div class="container">
     <div class="row justify-content-center mb-5">
       <div class="col-md-7 text-center">
-        <h2 class="font-weight-light text-black">Serviços</h2>
-        <p class="color-black-opacity-5">Nós ofereços diversos serviços para você!</p>
+        <h2 class="font-weight-light text-black"><?= $infos['INITIAL'][7]->getAllContent(); ?></h2>
+        <p class="color-black-opacity-5"><?= $infos['INITIAL'][8]->getAllContent(); ?></p>
       </div>
     </div>
     <div class="row align-items-stretch">
@@ -126,8 +126,8 @@
     <div class="container">
       <div class="row justify-content-center mb-5">
         <div class="col-md-7 text-center">
-          <h2 class="font-weight-light text-black">Conheça nosso blog!</h2>
-          <p class="color-black-opacity-5">Todas novidades e notícias para você!</p>
+          <h2 class="font-weight-light text-black"><?= $infos['INITIAL'][9]->getAllContent(); ?></h2>
+          <p class="color-black-opacity-5"><?= $infos['INITIAL'][10]->getAllContent(); ?></p>
         </div>
       </div>
       <div class="row mb-3 align-items-stretch">

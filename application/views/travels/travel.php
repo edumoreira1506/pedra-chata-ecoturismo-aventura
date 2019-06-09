@@ -17,7 +17,7 @@
     <div class="row">
       <?php foreach ($images as $image): ?>
         <div class="col-md-6 col-lg-4 mb-4 mb-lg-4">
-          <a href="#" class="unit-1 text-center limit-image" onclick="openModalImages(<?= $image->getImageId() ?>)">
+          <a href="#" class="unit-1 text-center limit-image" style="max-height: 196px;" onclick="openModalImages(<?= $image->getImageId() ?>)">
             <img src="<?= base_url().'public/images/images-travel/'.$image->getImagePath() ?>" alt="<?= 'Imagem do passeio: ' . $travel->getTitle() ?>" class="img-fluid">
           </a>
         </div>
@@ -60,7 +60,7 @@
           <div class="container">
             <div class="row">
               <div class="col-lg-12 mb-5">
-                <img src="<?= base_url().'public/images/images-travel/'.$image->getImagePath() ?>" alt="Imagem <?= $imagem->getImageId() ?>" class="img-md-fluid">
+                <img src="<?= base_url().'public/images/images-travel/'.$image->getImagePath() ?>" alt="Imagem <?= $image->getImageId() ?>" class="img-md-fluid">
               </div>
             </div>
           </div>

@@ -38,12 +38,12 @@
         <div class="col-md-4">
           <div class="card card-user">
             <div class="image">
-              <img src="<?= base_url().'public/images/persons/'.$person->getImagePath() ?>" alt="...">
+              <img src="<?= base_url().'public/images/persons/'.$person->getImagePath() ?>" alt="Pessoa <?= $person->getName() ?>">
             </div>
             <div class="card-body">
               <div class="author">
                 <a href="#">
-                  <img class="avatar border-gray" src="<?= base_url().'public/images/persons/'.$person->getImagePath() ?>" alt="...">
+                  <img class="avatar border-gray" src="<?= base_url().'public/images/persons/'.$person->getImagePath() ?>" alt="Pessoa <?= $person->getName() ?>">
                   <h5 class="title"><?= $person->getName(); ?></h5>
                 </a>
               </div>

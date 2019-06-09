@@ -17,6 +17,8 @@ class Home extends Base {
 		$this->load->model('services_model','service');
 		$this->load->model('categories_model','category');
 		$this->load->model('publications_model','publication');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function index()
@@ -29,6 +31,8 @@ class Home extends Base {
 		$services = $this->service->getAllServices();
 		$categories = $this->category->getAllCategories();
 		$publications = $this->publication->getPublications(2, 0);
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$data = [
 			'scripts' => ['default'],
@@ -40,7 +44,9 @@ class Home extends Base {
 			'services' => $services,
 			'categories' => $categories,
 			'activeLink' => 0,
-			'publications' => $publications
+			'publications' => $publications,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('home', $data);

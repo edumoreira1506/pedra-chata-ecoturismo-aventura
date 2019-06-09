@@ -38,12 +38,12 @@
       <div class="col-md-4">
         <div class="card card-user">
           <div class="image">
-            <img src="<?= base_url().'public/images/featured-images-travels/'.$travel->getFeaturedImage() ?>" alt="...">
+            <img src="<?= base_url().'public/images/featured-images-travels/'.$travel->getFeaturedImage() ?>" alt="Pessoa <?= $travel->getTitle() ?>">
           </div>
           <div class="card-body">
             <div class="author">
               <a href="#">
-                <img class="avatar border-gray" src="<?= base_url().'public/images/featured-images-travels/'.$travel->getFeaturedImage() ?>" alt="...">
+                <img class="avatar border-gray" src="<?= base_url().'public/images/featured-images-travels/'.$travel->getFeaturedImage() ?>" alt="Pessoa <?= $travel->getTitle() ?>">
                 <h5 class="title"><?= $travel->getTitle(); ?></h5>
               </a>
               <p class="description">

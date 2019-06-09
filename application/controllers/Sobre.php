@@ -13,6 +13,8 @@ class Sobre extends Base {
 		$this->load->model('social_medias_model', 'socialMedia');
 		$this->load->model('travels_model', 'travel');
 		$this->load->model('team_person_model', 'teamPerson');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function index()
@@ -22,6 +24,8 @@ class Sobre extends Base {
 		$travels = $this->travel->getAllTravels();
 		$categories = $this->category->getAllCategories();
 		$persons = $this->teamPerson->getAllPersonsTeam();
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$data = [
 			'scripts' => ['default'],
@@ -31,6 +35,8 @@ class Sobre extends Base {
 			'categories' => $categories,
 			'persons' => $persons,
 			'activeLink' => 2,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('about/home', $data);

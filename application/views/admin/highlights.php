@@ -39,11 +39,11 @@
       <div class="col-md-4">
         <div class="card card-user">
           <div class="image">
-            <img src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="...">
+            <img src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="Destaque <?= $highlight->getTitle() ?>">
           </div>
           <div class="card-body">
             <div class="author">
-              <img class="avatar border-gray" src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="...">
+              <img class="avatar border-gray" src="<?= base_url().'public/images/highlights/'.$highlight->getImagePath() ?>" alt="Destaque <?= $highlight->getTitle() ?>">
               <h5 class="title"><?= $highlight->getTitle(); ?></h5>
               <p class="description">
                 <?= $highlight->getActive(); ?>

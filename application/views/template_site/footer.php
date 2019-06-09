@@ -3,8 +3,8 @@
     <div class="row">
       <div class="col-lg-4">
         <div class="mb-5">
-          <h3 class="footer-heading mb-4">Sobre nós</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe pariatur reprehenderit vero atque, consequatur id ratione, et non dignissimos culpa? Ut veritatis, quos illum totam quis blanditiis, minima minus odio!</p>
+          <h3 class="footer-heading mb-4"><?= $infos['FOOTER'][0]->getContent() ?></h3>
+          <p><?= $infos['FOOTER'][1]->getAllContent() ?></p>
         </div>
       </div>
       <div class="col-lg-4 mb-5 mb-lg-0">

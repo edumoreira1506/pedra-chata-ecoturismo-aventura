@@ -13,6 +13,8 @@ class Contato extends Base {
 		$this->load->model('social_medias_model', 'socialMedia');
 		$this->load->model('travels_model', 'travel');
 		$this->load->model('contact_model', 'contact');
+		$this->load->model('infos_model','info');
+		$this->load->model('static_images_model','staticImages');
 	}
 
 	public function index()
@@ -21,6 +23,8 @@ class Contato extends Base {
 		$socialMedias = $this->socialMedia->getAllSocialMedias();
 		$travels = $this->travel->getAllTravels();
 		$categories = $this->category->getAllCategories();
+		$infos = $this->info->getAllInfos();
+		$staticImages = $this->staticImages->getAllImages();
 
 		$data = [
 			'scripts' => ['default', 'contact'],
@@ -29,6 +33,8 @@ class Contato extends Base {
 			'socialMedias' => $socialMedias,
 			'categories' => $categories,
 			'activeLink' => 1,
+			'infos' => $infos,
+			'staticImages' => $staticImages,
 		];
 
 		$this->template->loadMain('contact/home', $data);

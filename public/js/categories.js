@@ -96,7 +96,7 @@ const searchCategories = (keyWord = '') => {
 		                <button class="btn" title="Editar" onclick="editCategory(${response.categories[i].id_category})" style="font-size:14px;">
 		                  	<i class="fas fa-edit"></i>
 		                </button>
-		                <button class="btn" title="Excluir" onclick="deleteCategory(${response.categories[i].description})" style="font-size:14px;">
+		                <button class="btn" title="Excluir" onclick="deleteCategory(${response.categories[i].id_category})" style="font-size:14px;">
 		                  	<i class="fas fa-trash-alt"></i>
 		                </button>
 	                </td>

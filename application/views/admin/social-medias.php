@@ -90,7 +90,7 @@
 </div>
 <div class="card out-display-none" id="modal-register-social-media">
   <div class="card-header">
-    <h5 class="title">Criar nova opção do menu</h5>
+    <h5 class="title">Cadastrar nova rede social</h5>
   </div>
   <div class="card-body">
     <form id="register-social-media">
@@ -127,7 +127,7 @@
 </div>
 <div class="card out-display-none" id="modal-edit-social-media">
   <div class="card-header">
-    <h5 class="title">Criar nova opção do menu</h5>
+    <h5 class="title">Editar rede social</h5>
   </div>
   <div class="card-body">
     <form id="edit-social-media">

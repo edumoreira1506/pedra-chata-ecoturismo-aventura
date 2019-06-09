@@ -43,7 +43,7 @@
             <div class="card-body">
               <div class="author">
                 <a href="#">
-                  <img class="avatar border-gray" src="<?= base_url().'public/images/testimonies/'.$testimony->getImagePath() ?>" alt="...">
+                  <img class="avatar border-gray" src="<?= base_url().'public/images/testimonies/'.$testimony->getImagePath() ?>" alt="Pessoa <?= $testimony->getPersonName() ?>">
                   <h5 class="title"><?= $testimony->getPersonName(); ?></h5>
                 </a>
               </div>

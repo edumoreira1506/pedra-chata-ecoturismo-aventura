@@ -63,7 +63,7 @@
       </div>
       <div class="card out-display-none" id="modal-register-image">
     <div class="card-header">
-      <h5 class="title">Cadastrar novo banner</h5>
+      <h5 class="title">Cadastrar nova imagem</h5>
     </div>
     <div class="card-body">
       <form id="register-image">
