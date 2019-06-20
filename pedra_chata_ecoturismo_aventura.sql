@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 10-Jun-2019 às 00:30
+-- Generation Time: 20-Jun-2019 às 02:05
 -- Versão do servidor: 10.1.37-MariaDB
 -- versão do PHP: 5.6.40
 
@@ -117,7 +117,8 @@ CREATE TABLE `contact` (
 --
 
 INSERT INTO `contact` (`id_contact`, `name`, `email`, `message`, `contact_date`) VALUES
-(14, 'Olá preciso fazer um orçamento!', 'contato@eduardoem.com.br', 'Olá preciso fazer um orçamento!', '2019-06-03 22:26:31');
+(14, 'Olá preciso fazer um orçamento!', 'contato@eduardoem.com.br', 'Olá preciso fazer um orçamento!', '2019-06-03 22:26:31'),
+(15, 'dnsaondoandsoandaos', 'eduardomoreira1506@outlook.com', 'dnsaondoandsoandaos', '2019-06-10 19:09:31');
 
 -- --------------------------------------------------------
 
@@ -437,7 +438,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id_user`, `name`, `email`, `password`) VALUES
-(1, 'Antonio Eduardo Moreira', 'contato@eduardoem.com.br', 'zvl0GlGPlDhNOEs/AZaYWIVFINsilZ4m8jwhyLlczMyyKvOaHPS7Pul9yUg+d24eNJd0VtM3WnCjA9J6hDskMA==');
+(1, 'Antonio Eduardo Moreira', 'contato@eduardoem.com.br', 'zvl0GlGPlDhNOEs/AZaYWIVFINsilZ4m8jwhyLlczMyyKvOaHPS7Pul9yUg+d24eNJd0VtM3WnCjA9J6hDskMA=='),
+(2, 'Heverton de Abreu Moreira', 'tontexera13@gmail.com', '3t37MpIgtPP90hp5CKoV0kPGNrtl7TjOLD3QWwRoY6Hn5MYh+KN9BLwE80ui938mshQgVKGPiG13IMwBEnofaQ==');
 
 --
 -- Indexes for dumped tables
@@ -575,7 +577,7 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT for table `contact`
 --
 ALTER TABLE `contact`
-  MODIFY `id_contact` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_contact` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `highlights`
